@@ -206,20 +206,14 @@ function initHeroReveal() {
    GALLERY — driven by data array
    ============================================================ */
 
-// ── TODO: Replace these entries with your own images ──────
-// Put your image files in /images/work/ and update:
-//   src  → path relative to index.html, e.g. "images/work/my-piece.jpg"
-//   title → artwork title
-//   year  → year string
+// ── Add or remove entries to update the gallery ───────────
+// Put image files in /images/work/ and add an entry here.
 const GALLERY_ITEMS = [
-  { src: 'images/work/work-01.svg', title: 'Nebula Drift',    year: '2024' },
-  { src: 'images/work/work-02.svg', title: 'Chrome Reverie',  year: '2024' },
-  { src: 'images/work/work-03.svg', title: 'Void Cascade',    year: '2024' },
-  { src: 'images/work/work-04.svg', title: 'Signal Bloom',    year: '2024' },
-  { src: 'images/work/work-05.svg', title: 'Phase Shift',     year: '2024' },
-  { src: 'images/work/work-06.svg', title: 'Astral Gate',     year: '2023' },
-  { src: 'images/work/work-07.svg', title: 'Prism Collapse',  year: '2023' },
-  { src: 'images/work/work-08.svg', title: 'Neon Meridian',   year: '2023' },
+  { src: 'images/work/viber.jpg',      title: 'Viber',      year: '2024' },
+  { src: 'images/work/drakarnoir.jpg', title: 'Drakar Noir', year: '2024' },
+  { src: 'images/work/skullmance.jpg', title: 'Skullmance',  year: '2024' },
+  { src: 'images/work/return.jpg',     title: 'Return',      year: '2025' },
+  { src: 'images/work/focus.jpg',      title: 'Focus',       year: '2023' },
 ];
 
 function initGallery() {
