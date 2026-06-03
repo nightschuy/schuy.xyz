@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── SEO ─────────────────────────────────────────────── -->
+  <title>Schuy | Digital Artist &amp; Designer | CHS • FTL • MIA</title>
+  <meta name="description" content="Schuy — digital artist &amp; designer. High-end visual art, design assets, and VJ loops operating between Charleston and South Florida. CHS • FTL • MIA.">
+  <meta name="author" content="Schuy">
+  <link rel="canonical" href="https://schuy.xyz/">
+
+  <!-- ── Open Graph ───────────────────────────────────────── -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://schuy.xyz/">
+  <meta property="og:title"       content="Schuy | Digital Artist &amp; Designer">
+  <meta property="og:description" content="High-end visual art meets sensory distortion. Design assets, VJ loops, prints &amp; apparel.">
+  <meta property="og:image"       content="https://schuy.xyz/images/og-image.png"> <!-- TODO: add og-image.png to /images/ -->
+
+  <!-- ── Twitter Card ─────────────────────────────────────── -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:site"        content="@schuyhigh">
+  <meta name="twitter:creator"     content="@schuyhigh">
+  <meta name="twitter:title"       content="Schuy | Digital Artist &amp; Designer">
+  <meta name="twitter:description" content="High-end visual art meets sensory distortion. CHS • FTL • MIA.">
+  <meta name="twitter:image"       content="https://schuy.xyz/images/og-image.png"> <!-- TODO: add og-image.png -->
+
+  <!-- ── Favicon ──────────────────────────────────────────── -->
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg"> <!-- TODO: add favicon.svg (or .ico) to /images/ -->
+
+  <!-- ── Fonts (preconnect first) ─────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- ── Styles ───────────────────────────────────────────── -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- ── Google Analytics 4 ──────────────────────────────── -->
+  <!-- TODO: Replace G-XXXXXXXXXX with your GA4 Measurement ID.
+       Get it at analytics.google.com → Admin → Data Streams → your stream.
+       Both lines below must share the same ID. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  <!-- ── END Google Analytics ─────────────────────────────── -->
+</head>
+<body>
+
+<!-- ── Custom cursor glow (desktop only) ──────────────────── -->
+<div id="cursor-glow" aria-hidden="true"></div>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="#hero" class="nav-wordmark chrome-text" aria-label="Schuy — back to top">SCHUY</a>
+
+  <ul class="nav-links" role="list">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#shop-hero-band">Shop</a></li>
+    <li><a href="#goods">Goods</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+
+  <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile nav drawer -->
+<div id="nav-drawer" class="nav-drawer" role="dialog" aria-label="Navigation menu">
+  <ul role="list">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#shop-hero-band">Shop</a></li>
+    <li><a href="#goods">Goods</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section id="hero" aria-label="Hero">
+
+  <!-- Animated background -->
+  <div class="hero-bg" aria-hidden="true">
+    <!--
+      TODO: Hero video — drop your looping MP4 at /images/hero.mp4.
+      The <video> tag is already wired up; just add the file and it will
+      fade in automatically over the canvas animation.
+      Recommended: 1920×1080, H.264, < 8 MB, no audio.
+    -->
+    <video
+      class="hero-video"
+      autoplay muted loop playsinline
+      poster="images/hero-poster.jpg"
+      aria-hidden="true"
+    >
+      <source src="images/hero.mp4" type="video/mp4">
+    </video>
+
+    <!-- Animated canvas fallback — always visible; video fades over it -->
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  </div>
+
+  <!-- Gradient overlay -->
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <!-- Synthwave perspective grid -->
+  <div class="hero-grid" aria-hidden="true">
+    <svg viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gridFade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(217,70,239,0)" />
+          <stop offset="60%" stop-color="rgba(217,70,239,0.18)" />
+          <stop offset="100%" stop-color="rgba(107,58,255,0.22)" />
+        </linearGradient>
+      </defs>
+      <!-- Horizontal lines (perspective) -->
+      <line x1="0" y1="400" x2="1440" y2="400" stroke="url(#gridFade)" stroke-width="1"/>
+      <line x1="72" y1="340" x2="1368" y2="340" stroke="rgba(217,70,239,0.14)" stroke-width="0.8"/>
+      <line x1="160" y1="285" x2="1280" y2="285" stroke="rgba(217,70,239,0.11)" stroke-width="0.7"/>
+      <line x1="270" y1="235" x2="1170" y2="235" stroke="rgba(217,70,239,0.09)" stroke-width="0.6"/>
+      <line x1="380" y1="190" x2="1060" y2="190" stroke="rgba(217,70,239,0.07)" stroke-width="0.5"/>
+      <line x1="480" y1="150" x2="960" y2="150" stroke="rgba(217,70,239,0.05)" stroke-width="0.5"/>
+      <line x1="570" y1="115" x2="870" y2="115" stroke="rgba(217,70,239,0.04)" stroke-width="0.4"/>
+      <line x1="650" y1="84" x2="790" y2="84" stroke="rgba(217,70,239,0.03)" stroke-width="0.4"/>
+      <!-- Vertical lines (converge at vanishing point 720, 0) -->
+      <line x1="720" y1="0" x2="0"    y2="400" stroke="rgba(217,70,239,0.12)" stroke-width="0.6"/>
+      <line x1="720" y1="0" x2="160"  y2="400" stroke="rgba(107,58,255,0.10)" stroke-width="0.5"/>
+      <line x1="720" y1="0" x2="320"  y2="400" stroke="rgba(107,58,255,0.08)" stroke-width="0.5"/>
+      <line x1="720" y1="0" x2="480"  y2="400" stroke="rgba(107,58,255,0.07)" stroke-width="0.5"/>
+      <line x1="720" y1="0" x2="600"  y2="400" stroke="rgba(107,58,255,0.06)" stroke-width="0.4"/>
+      <line x1="720" y1="0" x2="660"  y2="400" stroke="rgba(107,58,255,0.05)" stroke-width="0.4"/>
+      <line x1="720" y1="0" x2="720"  y2="400" stroke="rgba(107,58,255,0.06)" stroke-width="0.4"/>
+      <line x1="720" y1="0" x2="780"  y2="400" stroke="rgba(107,58,255,0.05)" stroke-width="0.4"/>
+      <line x1="720" y1="0" x2="840"  y2="400" stroke="rgba(107,58,255,0.06)" stroke-width="0.4"/>
+      <line x1="720" y1="0" x2="960"  y2="400" stroke="rgba(107,58,255,0.07)" stroke-width="0.5"/>
+      <line x1="720" y1="0" x2="1120" y2="400" stroke="rgba(107,58,255,0.08)" stroke-width="0.5"/>
+      <line x1="720" y1="0" x2="1280" y2="400" stroke="rgba(107,58,255,0.10)" stroke-width="0.5"/>
+      <line x1="720" y1="0" x2="1440" y2="400" stroke="rgba(217,70,239,0.12)" stroke-width="0.6"/>
+    </svg>
+  </div>
+
+  <!-- Content -->
+  <div class="hero-content">
+    <h1 class="hero-wordmark chrome-text">SCHUY</h1>
+    <p class="hero-tagline">Visual Art + Design</p>
+    <p class="hero-sub">High-end design meets sensory distortion.</p>
+    <div class="hero-ctas" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a
+        href="#work"
+        class="btn btn-primary"
+        aria-label="View work"
+      >View Work</a>
+      <!-- TODO: Replace href with your Chill Originals store URL -->
+      <a
+        href="https://chilloriginals.com"
+        class="btn btn-ghost"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-track="shop"
+        aria-label="Shop prints and apparel — opens Chill Originals"
+      >Shop Prints &amp; Apparel</a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     SHOP CTA BAND — after hero
+     ============================================================ -->
+<section id="shop-hero-band" aria-label="Shop Chill Originals">
+  <div class="shop-band-inner">
+    <div class="shop-band-copy reveal">
+      <p class="shop-band-eyebrow">Limited Drops</p>
+      <h2 class="shop-band-heading">Prints &amp; Apparel<br>Now Available</h2>
+      <p class="shop-band-sub">Museum-quality fine art prints and limited-run apparel. Each piece is a window into the work.</p>
+    </div>
+    <!-- TODO: Replace href with your Chill Originals store URL -->
+    <a
+      href="https://chilloriginals.com"
+      class="btn btn-primary reveal reveal-delay-2"
+      target="_blank"
+      rel="noopener noreferrer"
+      data-track="shop"
+      aria-label="Shop prints and apparel at Chill Originals"
+    >
+      Shop Chill Originals
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============================================================
+     WORK / GALLERY
+     ============================================================ -->
+<section id="work" aria-labelledby="work-heading">
+  <div class="section-inner">
+    <div class="work-header">
+      <p class="section-label reveal">Selected Work</p>
+      <h2 id="work-heading" class="section-heading reveal reveal-delay-1">The Catalogue</h2>
+    </div>
+
+    <!--
+      Gallery items are injected by JS from the GALLERY_ITEMS array in main.js.
+      To add your artwork: update that array with your image paths, titles, and years.
+    -->
+    <div class="gallery-grid" role="list" aria-label="Art gallery"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SHOP MID BAND
+     ============================================================ -->
+<section id="shop-mid-band" aria-label="Shop midpage call to action">
+  <div class="shop-mid-inner">
+    <p class="section-label reveal" style="justify-content:center;">Own the Work</p>
+    <h2 class="shop-mid-heading reveal reveal-delay-1">Carry the&nbsp;vision.</h2>
+    <p class="shop-mid-sub reveal reveal-delay-2">Archival prints, limited apparel, and collector editions — available now through Chill Originals.</p>
+    <!-- TODO: Replace href with your Chill Originals store URL -->
+    <a
+      href="https://chilloriginals.com"
+      class="btn btn-primary reveal reveal-delay-3"
+      target="_blank"
+      rel="noopener noreferrer"
+      data-track="shop"
+      style="margin:0 auto;"
+      aria-label="Shop prints and apparel at Chill Originals"
+    >Shop Prints &amp; Apparel</a>
+  </div>
+</section>
+
+<!-- ============================================================
+     DIGITAL GOODS
+     ============================================================ -->
+<section id="goods" aria-labelledby="goods-heading">
+  <div class="section-inner">
+    <div class="goods-header">
+      <p class="section-label reveal">Digital Goods</p>
+      <h2 id="goods-heading" class="section-heading reveal reveal-delay-1">Made for Creators</h2>
+    </div>
+
+    <div class="goods-grid">
+
+      <!-- Card 1: Design Assets -->
+      <div class="goods-card reveal reveal-delay-2">
+        <div class="goods-icon" aria-hidden="true">
+          <!-- Layers icon -->
+          <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <p class="goods-audience">For Designers</p>
+        <h3 class="goods-title">Design Assets &amp; Kits</h3>
+        <p class="goods-desc">Curated texture packs, gradient systems, UI kits, and visual design assets built for high-end creative workflows. Drop them straight into Figma, Photoshop, or After Effects.</p>
+        <!-- TODO: Verify this is your correct Gumroad URL -->
+        <a
+          href="https://schuy.gumroad.com/"
+          class="goods-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-track="gumroad"
+          aria-label="Browse design assets on Gumroad — opens in new tab"
+        >
+          Browse Assets
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 2: VJ Loops -->
+      <div class="goods-card reveal reveal-delay-3">
+        <div class="goods-icon" aria-hidden="true">
+          <!-- Film / video icon -->
+          <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/>
+            <path d="M16 3h.01M12 3h.01M8 3h.01M4 3h.01M20 3h.01"/>
+            <circle cx="12" cy="14" r="3"/>
+          </svg>
+        </div>
+        <p class="goods-audience">For Musicians &amp; Visual Artists</p>
+        <h3 class="goods-title">VJ Loops &amp; Motion</h3>
+        <p class="goods-desc">Seamless looping visuals engineered for live performance and stage. Feed your Resolume, TouchDesigner, or MadMapper setup with immersive, brand-native motion content.</p>
+        <!-- TODO: Verify this is your correct Gumroad URL -->
+        <a
+          href="https://schuy.gumroad.com/"
+          class="goods-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-track="gumroad"
+          aria-label="Browse VJ loops on Gumroad — opens in new tab"
+        >
+          Browse Loops
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ABOUT
+     ============================================================ -->
+<section id="about" aria-labelledby="about-heading">
+  <div class="section-inner">
+    <div class="about-grid">
+
+      <!-- Left column -->
+      <div>
+        <p class="section-label about-label reveal">About</p>
+        <h2 id="about-heading" class="section-heading reveal reveal-delay-1">Schuy<br><span style="color:var(--violet-2);font-size:0.6em;font-weight:400;letter-spacing:0.1em;">(SKY-ler)</span></h2>
+        <div class="about-location reveal reveal-delay-2">
+          <span class="location-pill">Charleston, SC</span>
+          <span class="location-pill">Fort Lauderdale, FL</span>
+          <span class="location-pill">Miami, FL</span>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div>
+        <div class="about-bio reveal reveal-delay-1">
+          <p>
+            <strong>Schuy</strong> is a digital artist and designer operating between Charleston and South Florida —
+            a practice built at the intersection of visual art, motion, and high-end brand design.
+          </p>
+          <p>
+            The work lives in the space between the cinematic and the synthetic: deep color, geometric tension, and
+            an obsession with light that feels both engineered and alive. Whether it's a fine art print, a stage visual,
+            or a design system, the goal is always the same — <strong>sensory distortion at the highest possible resolution.</strong>
+          </p>
+          <p>
+            Available for select collaborations, commissions, and creative direction.
+          </p>
+        </div>
+
+        <div class="social-links reveal reveal-delay-2">
+          <a
+            href="https://instagram.com/schuyhigh"
+            class="social-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="social"
+            data-platform="instagram"
+            aria-label="Schuy on Instagram — @schuyhigh"
+          >
+            <!-- Instagram icon -->
+            <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+            </svg>
+            @schuyhigh
+          </a>
+          <a
+            href="https://twitter.com/schuyhigh"
+            class="social-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="social"
+            data-platform="twitter"
+            aria-label="Schuy on Twitter — @schuyhigh"
+          >
+            <!-- X / Twitter icon -->
+            <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4l16 16M4 20L20 4"/>
+            </svg>
+            @schuyhigh
+          </a>
+          <!-- TODO: Add Gumroad link to social row if desired -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SHOP FOOTER BAND
+     ============================================================ -->
+<section id="shop-footer-band" aria-label="Shop footer call to action">
+  <div class="section-inner">
+    <p class="section-label reveal" style="justify-content:center;">Chill Originals</p>
+    <h2 class="section-heading reveal reveal-delay-1" style="text-align:center;margin-bottom:16px;">Prints. Apparel.<br>Limited editions.</h2>
+    <p style="text-align:center;color:var(--text-dim);margin-bottom:36px;font-size:0.95rem;" class="reveal reveal-delay-2">Every piece ships with the intention of the original.</p>
+    <!-- TODO: Replace href with your Chill Originals store URL -->
+    <div style="display:flex;justify-content:center;" class="reveal reveal-delay-3">
+      <a
+        href="https://chilloriginals.com"
+        class="btn btn-primary"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-track="shop"
+        aria-label="Shop Chill Originals store — opens in new tab"
+      >
+        Shop Chill Originals
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer id="footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <a href="#hero" class="footer-wordmark chrome-text" aria-label="Back to top">SCHUY</a>
+
+      <nav aria-label="Footer navigation">
+        <ul class="footer-nav" role="list">
+          <li><a href="#work">Work</a></li>
+          <li><a href="#shop-hero-band">Shop</a></li>
+          <li><a href="#goods">Goods</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-socials">
+        <a
+          href="https://instagram.com/schuyhigh"
+          class="footer-social-btn"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-track="social"
+          data-platform="instagram"
+          aria-label="Instagram — @schuyhigh"
+        >
+          <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+        <a
+          href="https://twitter.com/schuyhigh"
+          class="footer-social-btn"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-track="social"
+          data-platform="twitter"
+          aria-label="Twitter — @schuyhigh"
+        >
+          <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 4l16 16M4 20L20 4"/>
+          </svg>
+        </a>
+        <!-- TODO: Add Gumroad social icon if desired -->
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        &copy; <span id="footer-year"></span> Schuy. All rights reserved.
+      </p>
+      <p class="footer-copy" style="color:var(--text-dim);">CHS &bull; FTL &bull; MIA</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     LIGHTBOX
+     ============================================================ -->
+<div
+  id="lightbox"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Image viewer"
+  aria-hidden="true"
+>
+  <button id="lightbox-close" class="lightbox-close" aria-label="Close image viewer">&times;</button>
+  <button id="lightbox-prev"  class="lightbox-nav"  aria-label="Previous image">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  </button>
+  <div class="lightbox-img-wrap">
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+  <button id="lightbox-next"  class="lightbox-nav"  aria-label="Next image">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+<!-- ── Scripts ───────────────────────────────────────────── -->
+<script src="js/main.js"></script>
+
+</body>
+</html>
