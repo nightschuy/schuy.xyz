@@ -209,7 +209,11 @@ function initHeroReveal() {
 // ── Add or remove entries to update the gallery ───────────
 // Put image files in /images/work/ and add an entry here.
 const GALLERY_ITEMS = [
-  { src: 'images/work/viber.jpg', title: 'Viber', year: '2024' },
+  { src: 'images/work/viber.jpg',      title: 'Viber',       year: '2024' },
+  { src: 'images/work/drakarnoir.jpg', title: 'Drakar Noir',  year: '2024' },
+  { src: 'images/work/skullmance.jpg', title: 'Skullmance',   year: '2024' },
+  { src: 'images/work/return.jpg',     title: 'Return',       year: '2025' },
+  { src: 'images/work/focus.jpg',      title: 'Focus',        year: '2023' },
 ];
 
 function initGallery() {
