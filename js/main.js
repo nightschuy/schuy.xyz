@@ -214,6 +214,7 @@ const GALLERY_ITEMS = [
   { src: 'images/work/skullmance.jpg', title: 'Skullmance',   year: '2024' },
   { src: 'images/work/return.jpg',     title: 'Return',       year: '2025' },
   { src: 'images/work/focus.jpg',      title: 'Focus',        year: '2023' },
+  { src: 'images/work/fixed.jpg',      title: 'Fixed',        year: '2024' },
 ];
 
 function initGallery() {
