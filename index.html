@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <!-- ── Styles ───────────────────────────────────────────── -->
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=20260621">
 
   <!-- ── Google Analytics 4 ──────────────────────────────── -->
   <!-- TODO: Replace G-XXXXXXXXXX with your GA4 Measurement ID.
@@ -98,42 +98,6 @@
   <!-- Spotlight sweep (recreates the 21st.dev spotlight effect) -->
   <div class="hero-spotlight" aria-hidden="true"></div>
 
-  <!-- Synthwave perspective grid -->
-  <div class="hero-grid" aria-hidden="true">
-    <svg viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="gridFade" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="rgba(217,70,239,0)" />
-          <stop offset="60%" stop-color="rgba(217,70,239,0.18)" />
-          <stop offset="100%" stop-color="rgba(107,58,255,0.22)" />
-        </linearGradient>
-      </defs>
-      <!-- Horizontal lines (perspective) -->
-      <line x1="0" y1="400" x2="1440" y2="400" stroke="url(#gridFade)" stroke-width="1"/>
-      <line x1="72" y1="340" x2="1368" y2="340" stroke="rgba(217,70,239,0.14)" stroke-width="0.8"/>
-      <line x1="160" y1="285" x2="1280" y2="285" stroke="rgba(217,70,239,0.11)" stroke-width="0.7"/>
-      <line x1="270" y1="235" x2="1170" y2="235" stroke="rgba(217,70,239,0.09)" stroke-width="0.6"/>
-      <line x1="380" y1="190" x2="1060" y2="190" stroke="rgba(217,70,239,0.07)" stroke-width="0.5"/>
-      <line x1="480" y1="150" x2="960" y2="150" stroke="rgba(217,70,239,0.05)" stroke-width="0.5"/>
-      <line x1="570" y1="115" x2="870" y2="115" stroke="rgba(217,70,239,0.04)" stroke-width="0.4"/>
-      <line x1="650" y1="84" x2="790" y2="84" stroke="rgba(217,70,239,0.03)" stroke-width="0.4"/>
-      <!-- Vertical lines (converge at vanishing point 720, 0) -->
-      <line x1="720" y1="0" x2="0"    y2="400" stroke="rgba(217,70,239,0.12)" stroke-width="0.6"/>
-      <line x1="720" y1="0" x2="160"  y2="400" stroke="rgba(107,58,255,0.10)" stroke-width="0.5"/>
-      <line x1="720" y1="0" x2="320"  y2="400" stroke="rgba(107,58,255,0.08)" stroke-width="0.5"/>
-      <line x1="720" y1="0" x2="480"  y2="400" stroke="rgba(107,58,255,0.07)" stroke-width="0.5"/>
-      <line x1="720" y1="0" x2="600"  y2="400" stroke="rgba(107,58,255,0.06)" stroke-width="0.4"/>
-      <line x1="720" y1="0" x2="660"  y2="400" stroke="rgba(107,58,255,0.05)" stroke-width="0.4"/>
-      <line x1="720" y1="0" x2="720"  y2="400" stroke="rgba(107,58,255,0.06)" stroke-width="0.4"/>
-      <line x1="720" y1="0" x2="780"  y2="400" stroke="rgba(107,58,255,0.05)" stroke-width="0.4"/>
-      <line x1="720" y1="0" x2="840"  y2="400" stroke="rgba(107,58,255,0.06)" stroke-width="0.4"/>
-      <line x1="720" y1="0" x2="960"  y2="400" stroke="rgba(107,58,255,0.07)" stroke-width="0.5"/>
-      <line x1="720" y1="0" x2="1120" y2="400" stroke="rgba(107,58,255,0.08)" stroke-width="0.5"/>
-      <line x1="720" y1="0" x2="1280" y2="400" stroke="rgba(107,58,255,0.10)" stroke-width="0.5"/>
-      <line x1="720" y1="0" x2="1440" y2="400" stroke="rgba(217,70,239,0.12)" stroke-width="0.6"/>
-    </svg>
-  </div>
-
   <!-- Content -->
   <div class="hero-content hero-split">
     <!-- Left: copy -->
@@ -159,12 +123,18 @@
       </div>
     </div>
 
-    <!-- Right: interactive 3D (three.js mounts into #hero-3d) -->
+    <!-- Scrim — keeps the copy legible over the full-bleed figure (desktop) -->
+    <div class="hero-scrim" aria-hidden="true"></div>
+
+    <!-- Interactive 3D (three.js mounts into #hero-3d) — full-bleed behind copy -->
     <div class="hero-3d">
       <div id="hero-3d" aria-label="Interactive 3D artwork" role="img"></div>
       <div class="hero-3d-loader" aria-hidden="true"><span class="loader"></span></div>
     </div>
   </div>
+
+  <!-- Bottom fade — melts the figure into the next section at the fold -->
+  <div class="hero-fade" aria-hidden="true"></div>
 
   <!-- Scroll indicator -->
   <div class="scroll-indicator" aria-hidden="true">
@@ -490,7 +460,7 @@
 </div>
 
 <!-- ── Scripts ───────────────────────────────────────────── -->
-<script src="js/main.js"></script>
+<script src="js/main.js?v=20260621"></script>
 
 <!-- ── three.js (ESM via CDN import-map — no build step) ──── -->
 <script type="importmap">
@@ -501,7 +471,7 @@
   }
 }
 </script>
-<script type="module" src="js/hero3d.js"></script>
+<script type="module" src="js/hero3d.js?v=20260621"></script>
 
 </body>
 </html>

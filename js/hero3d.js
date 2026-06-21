@@ -55,7 +55,7 @@ function initHero3D(mount) {
   camera.position.set(0, 0.4, 5);
 
   // ── Brand lighting (royal blue key, violet fill, magenta rim) ──
-  scene.add(new THREE.AmbientLight(0x6a6a9a, 0.6));
+  scene.add(new THREE.AmbientLight(0x7a7aa6, 1.15));
 
   const key = new THREE.DirectionalLight(0x2b4bff, 2.4);   // --blue-2
   key.position.set(4, 5, 5);
@@ -68,6 +68,11 @@ function initHero3D(mount) {
   const rim = new THREE.PointLight(0xd946ef, 6, 30);       // --magenta
   rim.position.set(-3, 2, -4);
   scene.add(rim);
+
+  // Lower front fill so the torso stays lit all the way down to the fold.
+  const torsoFill = new THREE.PointLight(0x4f63e6, 26, 20); // brand blue-violet
+  torsoFill.position.set(0, -1.5, 4);
+  scene.add(torsoFill);
 
   // ── Content group (model or placeholder) ──
   const group = new THREE.Group();

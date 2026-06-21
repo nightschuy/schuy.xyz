@@ -250,26 +250,6 @@ a { color: inherit; text-decoration: none; }
   z-index: 1;
 }
 
-/* Synthwave perspective grid */
-.hero-grid {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 55%;
-  z-index: 2;
-  overflow: hidden;
-  --grid-color: rgba(217, 70, 239, 0.18);
-}
-
-.hero-grid svg {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
 /* Spotlight sweep — recreates the 21st.dev "Spotlight" glow */
 .hero-spotlight {
   position: absolute;
@@ -299,26 +279,44 @@ a { color: inherit; text-decoration: none; }
 .hero-content {
   position: relative;
   z-index: 10;
+  height: 100%;
   text-align: center;
   padding: 0 24px;
   transform: translateY(0);
   transition: transform 0.1s linear;
 }
 
-/* Split layout — copy left, interactive 3D right */
+/* Split layout — copy left, interactive 3D right.
+   Stretches to full hero height so the figure can reach the fold. */
 .hero-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  align-items: center;
+  align-items: stretch;
   gap: 32px;
   width: 100%;
+  height: 100%;
   max-width: 1280px;
   margin: 0 auto;
   text-align: left;
 }
 
 .hero-copy {
+  align-self: center;
+  position: relative;
+  z-index: 2;
   padding-left: clamp(0px, 2vw, 24px);
+}
+
+/* Scrim behind the copy so text stays legible over the full-bleed figure */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    rgba(10,10,15,0.92) 0%,
+    rgba(10,10,15,0.6) 30%,
+    rgba(10,10,15,0) 60%);
 }
 
 .hero-ctas {
@@ -327,11 +325,14 @@ a { color: inherit; text-decoration: none; }
   flex-wrap: wrap;
 }
 
-/* 3D panel */
+/* 3D panel — full-bleed layer behind the copy so the arms aren't clipped
+   and the figure bridges the fold. (Stacked block on mobile, see below.) */
 .hero-3d {
-  position: relative;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   width: 100%;
-  height: clamp(360px, 56svh, 560px);
+  height: 100%;
 }
 
 #hero-3d {
@@ -366,6 +367,18 @@ a { color: inherit; text-decoration: none; }
   to { transform: rotate(360deg); }
 }
 
+/* Bottom fade — melts the figure into the next section at the fold */
+.hero-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26%;
+  z-index: 11;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(10,10,15,0) 0%, rgba(10,10,15,0.65) 55%, var(--bg) 100%);
+}
+
 /* Wordmark resized for the split layout (smaller than the old centered hero) */
 .hero-split .hero-wordmark {
   font-size: clamp(4rem, 9vw, 8rem);
@@ -373,14 +386,22 @@ a { color: inherit; text-decoration: none; }
 
 /* Stack on narrower viewports: copy on top, 3D below, re-centered */
 @media (max-width: 860px) {
+  .hero-content { height: auto; }
   .hero-split {
     grid-template-columns: 1fr;
+    height: auto;
     text-align: center;
     gap: 8px;
   }
   .hero-copy { padding-left: 0; }
   .hero-ctas { justify-content: center; }
-  .hero-3d { height: clamp(300px, 42svh, 420px); }
+  .hero-scrim { display: none; }
+  .hero-3d {
+    position: relative;
+    inset: auto;
+    z-index: auto;
+    height: clamp(300px, 42svh, 420px);
+  }
 }
 
 .hero-wordmark {
@@ -471,7 +492,7 @@ a { color: inherit; text-decoration: none; }
   bottom: 36px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 10;
+  z-index: 20;
   display: flex;
   flex-direction: column;
   align-items: center;
