@@ -1148,6 +1148,133 @@ section { position: relative; }
 }
 
 /* ============================================================
+   COOKIE CONSENT BANNER
+   ============================================================ */
+#cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: rgba(10, 10, 15, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  padding: 20px 40px;
+}
+
+.cookie-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.cookie-text {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  flex: 1;
+  min-width: 200px;
+}
+
+.cookie-link {
+  color: var(--violet-2);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+.cookie-link:hover { color: var(--chrome-hi); }
+
+.cookie-actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.cookie-btn {
+  padding: 10px 24px !important;
+  font-size: 0.75rem !important;
+}
+
+/* ============================================================
+   PROSE (Privacy Policy page)
+   ============================================================ */
+.prose-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 80px) 40px 120px;
+}
+
+.prose-page h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.prose-page .prose-meta {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 64px;
+}
+
+.prose-page h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--chrome-hi);
+  margin: 48px 0 16px;
+}
+
+.prose-page p {
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+
+.prose-page a {
+  color: var(--violet-2);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+.prose-page a:hover { color: var(--chrome-hi); }
+
+.prose-page ul {
+  margin: 0 0 16px 24px;
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+.prose-page ul li { margin-bottom: 6px; }
+
+.prose-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color 0.2s;
+  margin-bottom: 64px;
+}
+.prose-back:hover { color: var(--chrome-hi); }
+.prose-back svg { stroke: currentColor; }
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
@@ -1180,6 +1307,13 @@ section { position: relative; }
 
   #lightbox-prev { left: 10px; }
   #lightbox-next { right: 10px; }
+
+  #cookie-banner { padding: 16px 24px; }
+  .cookie-inner { flex-direction: column; align-items: flex-start; }
+  .cookie-actions { width: 100%; }
+  .cookie-btn { flex: 1; justify-content: center; }
+
+  .prose-page { padding: calc(var(--nav-h) + 48px) 24px 80px; }
 }
 
 @media (max-width: 480px) {
