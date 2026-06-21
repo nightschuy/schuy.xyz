@@ -16,6 +16,7 @@ const MODEL_URL = 'images/work/hero.glb';   // ← drop your Blender export here
 // Framing controls
 const FILL  = 10;    // figure height in world units (bigger = more zoomed in on FOCUS)
 const FOCUS = 0.88;  // vertical focus point: 0 = bottom (feet), 1 = top (head)
+const OFFSET_X = 1.25; // bias the figure right on wide layouts so the head clears the copy
 
 // Head-follow (desktop only). Mobile/touch keeps the 360° auto-rotate instead.
 const HEAD_YAW   = 0.55;  // max left/right head turn (radians)
@@ -235,6 +236,11 @@ function initHero3D(mount) {
     renderer.setSize(w, h);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    // Bias the figure right on wide (full-bleed) layouts so the head clears
+    // the copy; stay centered on narrow/mobile (keeps auto-rotate balanced).
+    const ox = (w / h) > 1.1 ? -OFFSET_X : 0;
+    controls.target.x = ox;
+    camera.position.x = ox;
   }
   new ResizeObserver(resize).observe(mount);
   resize();
