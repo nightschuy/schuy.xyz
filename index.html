@@ -88,27 +88,15 @@
 
   <!-- Animated background -->
   <div class="hero-bg" aria-hidden="true">
-    <!--
-      TODO: Hero video — drop your looping MP4 at /images/hero.mp4.
-      The <video> tag is already wired up; just add the file and it will
-      fade in automatically over the canvas animation.
-      Recommended: 1920×1080, H.264, < 8 MB, no audio.
-    -->
-    <video
-      class="hero-video"
-      autoplay muted loop playsinline
-      poster="images/hero-poster.jpg"
-      aria-hidden="true"
-    >
-      <source src="images/hero.mp4" type="video/mp4">
-    </video>
-
-    <!-- Animated canvas fallback — always visible; video fades over it -->
+    <!-- Animated canvas — ambient nebula/particle backdrop -->
     <canvas id="hero-canvas" aria-hidden="true"></canvas>
   </div>
 
   <!-- Gradient overlay -->
   <div class="hero-overlay" aria-hidden="true"></div>
+
+  <!-- Spotlight sweep (recreates the 21st.dev spotlight effect) -->
+  <div class="hero-spotlight" aria-hidden="true"></div>
 
   <!-- Synthwave perspective grid -->
   <div class="hero-grid" aria-hidden="true">
@@ -147,25 +135,34 @@
   </div>
 
   <!-- Content -->
-  <div class="hero-content">
-    <h1 class="hero-wordmark chrome-text">SCHUY</h1>
-    <p class="hero-tagline">Visual Art + Design</p>
-    <p class="hero-sub">High-end design meets sensory distortion.</p>
-    <div class="hero-ctas" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-      <a
-        href="#work"
-        class="btn btn-primary"
-        aria-label="View work"
-      >View Work</a>
-      <!-- TODO: Replace href with your Chill Originals store URL -->
-      <a
-        href="https://chilloriginals.com"
-        class="btn btn-ghost"
-        target="_blank"
-        rel="noopener noreferrer"
-        data-track="shop"
-        aria-label="Shop prints and apparel — opens Chill Originals"
-      >Shop Prints &amp; Apparel</a>
+  <div class="hero-content hero-split">
+    <!-- Left: copy -->
+    <div class="hero-copy">
+      <h1 class="hero-wordmark chrome-text">SCHUY</h1>
+      <p class="hero-tagline">Visual Art + Design</p>
+      <p class="hero-sub">High-end design meets sensory distortion.</p>
+      <div class="hero-ctas">
+        <a
+          href="#work"
+          class="btn btn-primary"
+          aria-label="View work"
+        >View Work</a>
+        <!-- TODO: Replace href with your Chill Originals store URL -->
+        <a
+          href="https://chilloriginals.com"
+          class="btn btn-ghost"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-track="shop"
+          aria-label="Shop prints and apparel — opens Chill Originals"
+        >Shop Prints &amp; Apparel</a>
+      </div>
+    </div>
+
+    <!-- Right: interactive 3D (three.js mounts into #hero-3d) -->
+    <div class="hero-3d">
+      <div id="hero-3d" aria-label="Interactive 3D artwork" role="img"></div>
+      <div class="hero-3d-loader" aria-hidden="true"><span class="loader"></span></div>
     </div>
   </div>
 
@@ -494,6 +491,17 @@
 
 <!-- ── Scripts ───────────────────────────────────────────── -->
 <script src="js/main.js"></script>
+
+<!-- ── three.js (ESM via CDN import-map — no build step) ──── -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="js/hero3d.js"></script>
 
 </body>
 </html>
