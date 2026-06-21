@@ -81,6 +81,8 @@ function initHero3D(mount) {
 
   let spinObject = null; // what auto-rotates (mobile/touch)
 
+  const isMobile = window.matchMedia('(max-width: 860px)').matches;
+
   // Head-follow is for true mouse pointers; touch devices keep auto-rotate.
   const wantsHeadFollow =
     window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion;
@@ -205,10 +207,11 @@ function initHero3D(mount) {
   controls.enablePan = false;
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
-  controls.autoRotate = !wantsHeadFollow && !reduceMotion;
+  controls.autoRotate = !isMobile && !wantsHeadFollow && !reduceMotion;
   controls.autoRotateSpeed = 1.1;
   controls.minPolarAngle = Math.PI * 0.25;
   controls.maxPolarAngle = Math.PI * 0.72;
+  if (isMobile) controls.enabled = false;
 
   // ── Cursor tracking (desktop) ──
   if (wantsHeadFollow) {

@@ -384,24 +384,74 @@ a { color: inherit; text-decoration: none; }
   font-size: clamp(4rem, 9vw, 8rem);
 }
 
-/* Stack on narrower viewports: copy on top, 3D below, re-centered */
+/* Mobile hero: full-bleed 3D figure, copy + CTAs overlaid */
 @media (max-width: 860px) {
-  .hero-content { height: auto; }
+  .hero-content { height: 100%; }
+
   .hero-split {
-    grid-template-columns: 1fr;
-    height: auto;
-    text-align: center;
-    gap: 8px;
-  }
-  .hero-copy { padding-left: 0; }
-  .hero-ctas { justify-content: center; }
-  .hero-scrim { display: none; }
-  .hero-3d {
+    display: block;
     position: relative;
-    inset: auto;
-    z-index: auto;
-    height: clamp(300px, 42svh, 420px);
+    height: 100%;
+    text-align: center;
+    gap: 0;
   }
+
+  /* 3D returns to full-bleed — fills the entire hero */
+  .hero-3d {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Copy overlay sits above the 3D, spans the full hero */
+  .hero-copy {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    align-self: stretch;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: calc(var(--nav-h) + 20px) 24px 0;
+    pointer-events: none;
+    text-align: center;
+  }
+
+  /* Sub text hidden — wordmark + tagline only at the top */
+  .hero-sub { display: none; }
+
+  /* CTAs float at chest level */
+  .hero-ctas {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 26%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0 32px;
+    pointer-events: all;
+  }
+
+  .hero-ctas .btn {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+
+  /* Wordmark — restore default size (split layout shrank it) */
+  .hero-split .hero-wordmark {
+    font-size: clamp(4rem, 20vw, 6rem);
+  }
+
+  .hero-scrim { display: none; }
 }
 
 .hero-wordmark {
