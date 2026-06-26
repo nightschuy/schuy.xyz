@@ -209,6 +209,10 @@ function initHeroReveal() {
 // ── Add or remove entries to update the gallery ───────────
 // Put image files in /images/work/ and add an entry here.
 const GALLERY_ITEMS = [
+  { src: 'images/work/saturn.jpg',     title: 'Saturn',       year: '2025' },
+  { src: 'images/work/shattered.jpg',  title: 'Shattered',    year: '2025' },
+  { src: 'images/work/boogie.jpg',     title: 'Boogie',       year: '2025' },
+  { src: 'images/work/partner.jpg',    title: 'Partner',      year: '2025' },
   { src: 'images/work/viber.jpg',      title: 'Viber',       year: '2024' },
   { src: 'images/work/drakarnoir.jpg', title: 'Drakar Noir',  year: '2024' },
   { src: 'images/work/skullmance.jpg', title: 'Skullmance',   year: '2024' },
@@ -230,7 +234,7 @@ function initGallery() {
     el.dataset.index = i;
 
     el.innerHTML = `
-      <img src="${item.src}" alt="${item.title} — ${item.year}" loading="lazy" width="800" height="1000">
+      <img src="${item.src}" alt="${item.title} (${item.year}) — digital artwork by Schuyler Hample (Schuy)" loading="lazy" width="800" height="1000">
       <div class="gallery-overlay">
         <div class="gallery-expand" aria-hidden="true">
           <svg viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
@@ -262,7 +266,7 @@ function openLightbox(index) {
   const item = GALLERY_ITEMS[index];
 
   img.src = item.src;
-  img.alt = `${item.title} — ${item.year}`;
+  img.alt = `${item.title} (${item.year}) — digital artwork by Schuyler Hample (Schuy)`;
   cap.innerHTML = `<strong>${item.title}</strong><span>${item.year}</span>`;
 
   lb.classList.add('open');
@@ -362,7 +366,7 @@ function initCursorGlow() {
    ANALYTICS — event wiring
    ============================================================ */
 function initAnalyticsEvents() {
-  // Shop / Chill Originals CTAs → 'shop_click'
+  // Shop CTAs → 'shop_click'
   document.querySelectorAll('[data-track="shop"]').forEach(el => {
     el.addEventListener('click', () => trackEvent('shop_click', { link_url: el.href }));
   });

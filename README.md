@@ -56,21 +56,21 @@ The `<video>` tag is already in `index.html`. The video fades in over the canvas
 
 ---
 
-## How to update the Chill Originals link
+## How to update the shop link
 
-Search `index.html` for `https://chilloriginals.com` — there are **4 occurrences** (hero CTA, hero band, mid band, footer band). Replace all four with your actual store URL.
+Search `index.html` for `https://schuyxyz.etsy.com` — there are **2 occurrences** (hero CTA, shop band). Replace both with your store URL.
 
 Or find every instance at once:
 
 ```
-grep -n "chilloriginals.com" index.html
+grep -n "etsy.com" index.html
 ```
 
 ---
 
 ## How to update the Gumroad link
 
-Search `index.html` for `https://schuy.gumroad.com/` — there are **2 occurrences** (design assets card, VJ loops card). Replace both with your Gumroad page URL.
+Both the design assets card and the VJ loops card link to `https://schuy.gumroad.com/`. Search `index.html` for that URL to update both.
 
 ---
 
@@ -84,7 +84,7 @@ Search `index.html` for `https://schuy.gumroad.com/` — there are **2 occurrenc
 
 | Element | Event name | Fires on |
 |---|---|---|
-| Shop / Chill Originals CTAs | `shop_click` | Any click on `data-track="shop"` links |
+| Shop CTAs | `shop_click` | Any click on `data-track="shop"` links |
 | Gumroad links | `gumroad_click` | Any click on `data-track="gumroad"` links |
 | Social links | `social_click` | Any click on `data-track="social"` links |
 
