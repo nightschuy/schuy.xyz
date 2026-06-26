@@ -82,6 +82,7 @@ function initHero3D(mount) {
   let spinObject = null; // what auto-rotates (mobile/touch)
 
   const isMobile = window.matchMedia('(max-width: 860px)').matches;
+  const isTouch  = window.matchMedia('(pointer: coarse)').matches;
 
   // Head-follow is for true mouse pointers; touch devices keep auto-rotate.
   const wantsHeadFollow =
@@ -201,7 +202,8 @@ function initHero3D(mount) {
   );
 
   // ── Controls (orbit by drag; no zoom/pan) ──
-  // Touch devices auto-rotate; mouse devices stay still and track the cursor.
+  // Desktop (mouse) only: drag to orbit + cursor head-follow. Touch devices get
+  // no interaction so finger swipes scroll the page (see below).
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableZoom = false;
   controls.enablePan = false;
@@ -211,7 +213,15 @@ function initHero3D(mount) {
   controls.autoRotateSpeed = 1.1;
   controls.minPolarAngle = Math.PI * 0.25;
   controls.maxPolarAngle = Math.PI * 0.72;
-  if (isMobile) controls.enabled = false;
+
+  // On touch devices the figure is non-interactive: OrbitControls sets
+  // touch-action:none on the canvas, which traps page scrolling over the
+  // full-bleed figure. Drop all pointer capture so swipes scroll the page.
+  if (isTouch) {
+    controls.enabled = false;
+    renderer.domElement.style.touchAction = 'pan-y';
+    renderer.domElement.style.pointerEvents = 'none';
+  }
 
   // ── Cursor tracking (desktop) ──
   if (wantsHeadFollow) {
