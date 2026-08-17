@@ -5,33 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- ── SEO ─────────────────────────────────────────────── -->
-  <title>Schuy | Digital Artist &amp; Designer | CHS • FTL • MIA</title>
-  <meta name="description" content="Schuy — digital artist &amp; designer. High-end visual art, design assets, and VJ loops operating between Charleston and South Florida. CHS • FTL • MIA.">
+  <title>Schuy — Digital Artist &amp; Designer | Prints, VJ Loops &amp; Design Assets</title>
+  <meta name="description" content="Schuy — digital artist &amp; designer. Fine art prints, design assets, and VJ loops. Operating between Charleston and South Florida. CHS • FTL • MIA.">
   <meta name="author" content="Schuy">
   <link rel="canonical" href="https://schuy.xyz/">
 
   <!-- ── Open Graph ───────────────────────────────────────── -->
-  <meta property="og:type"        content="website">
-  <meta property="og:url"         content="https://schuy.xyz/">
-  <meta property="og:title"       content="Schuy | Digital Artist &amp; Designer">
-  <meta property="og:description" content="High-end visual art meets sensory distortion. Design assets, VJ loops, prints &amp; apparel.">
-  <meta property="og:image"       content="https://schuy.xyz/images/og-image.png"> <!-- TODO: add og-image.png to /images/ -->
+  <meta property="og:type"           content="website">
+  <meta property="og:url"            content="https://schuy.xyz/">
+  <meta property="og:site_name"      content="Schuy">
+  <meta property="og:title"          content="Schuy | Digital Artist &amp; Designer">
+  <meta property="og:description"    content="High-end visual art meets sensory distortion. Design assets, VJ loops, prints &amp; apparel.">
+  <meta property="og:image"          content="https://schuy.xyz/images/og-image.jpg">
+  <meta property="og:image:type"     content="image/jpeg">
+  <meta property="og:image:width"    content="1200">
+  <meta property="og:image:height"   content="630">
+  <meta property="og:image:alt"      content="SCHUY — Visual Art + Design. Three digital artworks in deep blue and violet.">
 
   <!-- ── Twitter Card ─────────────────────────────────────── -->
   <meta name="twitter:card"        content="summary_large_image">
   <meta name="twitter:title"       content="Schuy | Digital Artist &amp; Designer">
   <meta name="twitter:description" content="High-end visual art meets sensory distortion. CHS • FTL • MIA.">
-  <meta name="twitter:image"       content="https://schuy.xyz/images/og-image.png"> <!-- TODO: add og-image.png -->
+  <meta name="twitter:image"       content="https://schuy.xyz/images/og-image.jpg">
+  <meta name="twitter:image:alt"   content="SCHUY — Visual Art + Design. Three digital artworks in deep blue and violet.">
 
   <!-- ── Favicon ──────────────────────────────────────────── -->
-  <link rel="icon" type="image/svg+xml" href="images/favicon.svg"> <!-- TODO: add favicon.svg (or .ico) to /images/ -->
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <meta name="theme-color" content="#0a0a0f">
 
-  <!-- ── Fonts (preconnect first) ─────────────────────────── -->
+  <!-- ── Fonts (preconnect first, loaded via link — not CSS @import —
+       so the font fetch starts in parallel with the stylesheet) ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;700;900&display=swap">
 
   <!-- ── Styles ───────────────────────────────────────────── -->
-  <link rel="stylesheet" href="css/styles.css?v=20260625-1">
+  <link rel="stylesheet" href="css/styles.css?v=20260817-1">
 
   <!-- ── Google Analytics 4 ──────────────────────────────── -->
   <!-- GA4 is consent-gated: initialized by js/cookie-consent.js only after
@@ -44,6 +53,9 @@
 <!-- ── Custom cursor glow (desktop only) ──────────────────── -->
 <div id="cursor-glow" aria-hidden="true"></div>
 
+<!-- ── Scroll progress rule ───────────────────────────────── -->
+<div class="scroll-progress" aria-hidden="true"></div>
+
 <!-- ============================================================
      NAVIGATION
      ============================================================ -->
@@ -52,7 +64,7 @@
 
   <ul class="nav-links" role="list">
     <li><a href="#work">Work</a></li>
-    <li><a href="#shop-hero-band">Shop</a></li>
+    <li><a href="#shop">Shop</a></li>
     <li><a href="#goods">Goods</a></li>
     <li><a href="#about">About</a></li>
   </ul>
@@ -66,7 +78,7 @@
 <div id="nav-drawer" class="nav-drawer" role="dialog" aria-label="Navigation menu">
   <ul role="list">
     <li><a href="#work">Work</a></li>
-    <li><a href="#shop-hero-band">Shop</a></li>
+    <li><a href="#shop">Shop</a></li>
     <li><a href="#goods">Goods</a></li>
     <li><a href="#about">About</a></li>
   </ul>
@@ -135,30 +147,6 @@
 </section>
 
 <!-- ============================================================
-     SHOP CTA BAND — after hero
-     ============================================================ -->
-<section id="shop-hero-band" aria-label="Shop prints and apparel">
-  <div class="shop-band-inner">
-    <div class="shop-band-copy reveal">
-      <p class="shop-band-eyebrow">Limited Drops</p>
-      <h2 class="shop-band-heading">What brings you here?</h2>
-      <p class="shop-band-sub">Museum-quality fine art prints and limited-run apparel. Each piece is a window into the work.</p>
-    </div>
-    <a
-      href="https://schuyxyz.etsy.com"
-      class="btn btn-primary reveal reveal-delay-2"
-      target="_blank"
-      rel="noopener noreferrer"
-      data-track="shop"
-      aria-label="Shop prints and apparel on Etsy"
-    >
-      Shop Prints
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-  </div>
-</section>
-
-<!-- ============================================================
      WORK / GALLERY
      ============================================================ -->
 <section id="work" aria-labelledby="work-heading">
@@ -173,6 +161,31 @@
       To add your artwork: update that array with your image paths, titles, and years.
     -->
     <div class="gallery-grid" role="list" aria-label="Art gallery"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SHOP CTA BAND — after the work, so the sale follows the art
+     ============================================================ -->
+<section id="shop" aria-label="Shop prints and apparel">
+  <div class="shop-glow" aria-hidden="true"></div>
+  <div class="shop-band-inner">
+    <div class="shop-band-copy reveal">
+      <p class="shop-band-eyebrow">Limited Drops</p>
+      <h2 class="shop-band-heading">Own a Piece of the Work</h2>
+      <p class="shop-band-sub">Museum-quality fine art prints and limited-run apparel. Each piece is a window into the work.</p>
+    </div>
+    <a
+      href="https://schuyxyz.etsy.com"
+      class="btn btn-primary reveal reveal-delay-2"
+      target="_blank"
+      rel="noopener noreferrer"
+      data-track="shop"
+      aria-label="Shop prints and apparel on Etsy"
+    >
+      Shop Prints
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
   </div>
 </section>
 
@@ -252,7 +265,7 @@
       <!-- Left column -->
       <div>
         <p class="section-label about-label reveal">About</p>
-        <h2 id="about-heading" class="section-heading reveal reveal-delay-1">Schuyler Hample<br><span style="color:var(--violet-2);font-size:0.6em;font-weight:400;letter-spacing:0.1em;">(SKY-ler)</span></h2>
+        <h2 id="about-heading" class="section-heading reveal reveal-delay-1">Schuyler Hample<br><span class="about-pron">(SKY-ler)</span></h2>
         <div class="about-location reveal reveal-delay-2">
           <span class="location-pill">Charleston, SC</span>
           <span class="location-pill">Fort Lauderdale, FL</span>
@@ -264,17 +277,26 @@
       <div>
         <div class="about-bio reveal reveal-delay-1">
           <p>
-            <strong>Schuyler Hample</strong>, aka <strong>Schuy</strong>, is a digital artist and designer operating between Charleston and South Florida —
-            a practice built at the intersection of visual art, motion, and high-end brand design.
+            <strong>Schuyler Hample</strong> — aka <strong>Schuy</strong> — is a digital artist and designer.
+            The work lives where the cinematic meets the synthetic: deep color, geometric tension,
+            and light that feels both engineered and alive.
           </p>
           <p>
-            The work lives in the space between the cinematic and the synthetic: deep color, geometric tension, and
-            an obsession with light that feels both engineered and alive. Whether it's a fine art print, a stage visual,
-            or a design system, the goal is always the same — <strong>immersive digital imagery at the highest possible pixel count.</strong>
+            Print, stage visual, or design system — the goal is the same:
+            <strong>immersive digital imagery at the highest possible pixel count.</strong>
           </p>
           <p>
             Available for select collaborations, commissions, and creative direction.
           </p>
+          <a
+            href="mailto:schuyler.hample@gmail.com?subject=Commission%20inquiry"
+            class="btn btn-ghost about-cta"
+            data-track="contact"
+            aria-label="Email Schuy about a commission or collaboration"
+          >
+            Get in Touch
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
 
@@ -293,9 +315,10 @@
       <nav aria-label="Footer navigation">
         <ul class="footer-nav" role="list">
           <li><a href="#work">Work</a></li>
-          <li><a href="#shop-hero-band">Shop</a></li>
+          <li><a href="#shop">Shop</a></li>
           <li><a href="#goods">Goods</a></li>
           <li><a href="#about">About</a></li>
+          <li><a href="mailto:schuyler.hample@gmail.com" data-track="contact">Contact</a></li>
         </ul>
       </nav>
 
@@ -351,7 +374,7 @@
           aria-label="Behance — @schuy"
         >
           <svg viewBox="0 0 576 512" aria-hidden="true">
-            <path fill="currentColor" stroke="none" d="M232 237.2c31.8-15.2 48.4-38.2 48.4-74 0-70.6-52.6-87.8-113.3-87.8H0v354.4h171.8c64.4 0 124.9-30.9 124.9-102.9 0-44.5-21.1-77.4-64.7-89.7zM77.9 135.9h74.5c28.7 0 54.5 8 54.5 41.3 0 30.7-20.1 43-48.5 43H77.9V135.9zm78.7 207.5H77.9V233.6h80.2c34.9 0 57.2 14.6 57.2 51.8 0 36.5-26.5 58zM575.7 268.9c0-77.8-45.5-142.6-127.8-142.6-79.9 0-134.2 60.1-134.2 139 0 81.8 51.5 137.8 134.2 137.8 62.5 0 103-28.1 122.7-88.1h-66.5c-6.9 22.4-34.9 34.1-56.7 34.1-42.1 0-64.2-24.7-64.2-66.6h192.1c.3-4.2.4-8.4.4-12.6zM383.6 225.1c2.3-34.5 26.6-55.9 60.9-55.9 36 0 53.9 21.2 57 55.9H383.6zM360 103.4h128v32H360z"/>
+            <path fill="currentColor" stroke="none" d="M232 237.2c31.8-15.2 48.4-38.2 48.4-74 0-70.6-52.6-87.8-113.3-87.8H0v354.4h171.8c64.4 0 124.9-30.9 124.9-102.9 0-44.5-21.1-77.4-64.7-89.7zM77.9 135.9h74.5c28.7 0 54.5 8 54.5 41.3 0 30.7-20.1 43-48.5 43H77.9V135.9zm78.7 207.5H77.9V233.6h80.2c34.9 0 57.2 14.6 57.2 51.8 0 36.5-26.5 58-63.6 58zM575.7 268.9c0-77.8-45.5-142.6-127.8-142.6-79.9 0-134.2 60.1-134.2 139 0 81.8 51.5 137.8 134.2 137.8 62.5 0 103-28.1 122.7-88.1h-66.5c-6.9 22.4-34.9 34.1-56.7 34.1-42.1 0-64.2-24.7-64.2-66.6h192.1c.3-4.2.4-8.4.4-12.6zM383.6 225.1c2.3-34.5 26.6-55.9 60.9-55.9 36 0 53.9 21.2 57 55.9H383.6zM360 103.4h128v32H360z"/>
           </svg>
         </a>
       </div>
@@ -361,9 +384,9 @@
       <p class="footer-copy">
         &copy; <span id="footer-year"></span> Schuy. All rights reserved.
       </p>
-      <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;">
-        <p class="footer-copy" style="color:var(--text-dim);">CHS &bull; FTL &bull; MIA</p>
-        <a href="privacy.html" class="footer-copy" style="color:var(--text-dim);text-decoration:underline;text-underline-offset:2px;transition:color 0.2s;" onmouseover="this.style.color='var(--chrome-hi)'" onmouseout="this.style.color='var(--text-dim)'">Privacy Policy</a>
+      <div class="footer-meta">
+        <p class="footer-copy">CHS &bull; FTL &bull; MIA</p>
+        <a href="privacy.html" class="footer-copy footer-meta-link">Privacy Policy</a>
       </div>
     </div>
   </div>
@@ -384,7 +407,9 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
   </button>
   <div class="lightbox-img-wrap">
-    <img id="lightbox-img" src="" alt="">
+    <!-- No src until a piece is opened — an empty src makes the browser
+         re-request the page itself as an image. -->
+    <img id="lightbox-img" alt="">
     <div class="lightbox-caption" id="lightbox-caption"></div>
   </div>
   <button id="lightbox-next"  class="lightbox-nav"  aria-label="Next image">
@@ -410,7 +435,7 @@
 
 <!-- ── Scripts ───────────────────────────────────────────── -->
 <script src="js/cookie-consent.js"></script>
-<script src="js/main.js?v=20260625-1"></script>
+<script src="js/main.js?v=20260817-1"></script>
 
 <!-- ── three.js (ESM via CDN import-map — no build step) ──── -->
 <script type="importmap">
@@ -421,7 +446,7 @@
   }
 }
 </script>
-<script type="module" src="js/hero3d.js?v=20260625-1"></script>
+<script type="module" src="js/hero3d.js?v=20260817-1"></script>
 
 </body>
 </html>

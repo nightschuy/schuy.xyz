@@ -33,9 +33,30 @@ function initNav() {
   const toggle = document.querySelector('.nav-toggle');
   const drawer = document.querySelector('.nav-drawer');
 
-  window.addEventListener('scroll', () => {
+  const progress = document.querySelector('.scroll-progress');
+  let ticking = false;
+
+  function onScroll() {
     nav.classList.toggle('scrolled', window.scrollY > 40);
+
+    if (progress) {
+      // Guard the divide: on a page shorter than the viewport there is
+      // nothing to scroll and the denominator is 0.
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+      progress.style.setProperty('--scroll-progress', Math.min(1, Math.max(0, ratio)).toFixed(4));
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(onScroll);
+    }
   }, { passive: true });
+
+  onScroll();
 
   if (toggle && drawer) {
     toggle.addEventListener('click', () => {
@@ -208,13 +229,16 @@ function initHeroReveal() {
 
 // ── Add or remove entries to update the gallery ───────────
 // Put image files in /images/work/ and add an entry here.
+// Optional `shop` field: URL of the piece's print listing — shows an
+// "Available as print" link in the lightbox. Use the exact Etsy listing
+// URL per piece; the shop root is a placeholder for the mockup.
 const GALLERY_ITEMS = [
-  { src: 'images/work/saturn.jpg',     title: 'Saturn',       year: '2025' },
-  { src: 'images/work/shattered.jpg',  title: 'Shattered',    year: '2025' },
+  { src: 'images/work/saturn.jpg',     title: 'Saturn',       year: '2025', shop: 'https://schuyxyz.etsy.com' },
+  { src: 'images/work/shattered.jpg',  title: 'Shattered',    year: '2025', shop: 'https://schuyxyz.etsy.com' },
   { src: 'images/work/boogie.jpg',     title: 'Boogie',       year: '2025' },
   { src: 'images/work/partner.jpg',    title: 'Partner',      year: '2025' },
-  { src: 'images/work/viber.jpg',      title: 'Viber',       year: '2024' },
-  { src: 'images/work/skullmance.jpg', title: 'Skullmance',   year: '2024' },
+  { src: 'images/work/viber.jpg',      title: 'Viber',        year: '2024' },
+  { src: 'images/work/skullmance.jpg', title: 'Skullmance',   year: '2024', shop: 'https://schuyxyz.etsy.com' },
   { src: 'images/work/return.jpg',     title: 'Return',       year: '2025' },
   { src: 'images/work/focus.jpg',      title: 'Focus',        year: '2023' },
   { src: 'images/work/fixed.jpg',      title: 'Fixed',        year: '2024' },
@@ -226,7 +250,9 @@ function initGallery() {
 
   GALLERY_ITEMS.forEach((item, i) => {
     const el = document.createElement('div');
-    el.className = 'gallery-item reveal reveal-delay-' + ((i % 4) + 1);
+    // The lead piece runs as a 2×2 feature block (see .is-feature in the CSS).
+    el.className = 'gallery-item reveal reveal-delay-' + ((i % 4) + 1)
+                 + (i === 0 ? ' is-feature' : '');
     el.setAttribute('tabindex', '0');
     el.setAttribute('role', 'button');
     el.setAttribute('aria-label', `View ${item.title}, ${item.year}`);
@@ -242,6 +268,14 @@ function initGallery() {
         <p class="gallery-year">${item.year}</p>
       </div>
     `;
+
+    // The feature is the largest thing in the grid and the likely LCP element,
+    // so it shouldn't wait in the lazy queue behind the rest.
+    if (i === 0) {
+      const img = el.querySelector('img');
+      img.loading = 'eager';
+      img.setAttribute('fetchpriority', 'high');
+    }
 
     el.addEventListener('click', () => openLightbox(i));
     el.addEventListener('keydown', e => {
@@ -266,7 +300,10 @@ function openLightbox(index) {
 
   img.src = item.src;
   img.alt = `${item.title} (${item.year}) — digital artwork by Schuyler Hample (Schuy)`;
-  cap.innerHTML = `<strong>${item.title}</strong><span>${item.year}</span>`;
+  const shopLink = item.shop
+    ? `<a href="${item.shop}" class="lightbox-shop-link" target="_blank" rel="noopener noreferrer" data-track="shop">Available as print →</a>`
+    : '';
+  cap.innerHTML = `<strong>${item.title}</strong><span>${item.year}</span>${shopLink}`;
 
   lb.classList.add('open');
   lb.setAttribute('aria-hidden', 'false');

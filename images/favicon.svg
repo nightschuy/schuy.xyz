@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Schuy">
+  <defs>
+    <linearGradient id="s-grad" x1="18" y1="14" x2="46" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0"    stop-color="#2b4bff"/>
+      <stop offset="0.52" stop-color="#8b5cf6"/>
+      <stop offset="1"    stop-color="#d946ef"/>
+    </linearGradient>
+    <linearGradient id="s-edge" x1="12" y1="12" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0"   stop-color="#2b4bff" stop-opacity="0.55"/>
+      <stop offset="1"   stop-color="#d946ef" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Near-black tile with a brand-gradient edge -->
+  <rect x="1.5" y="1.5" width="61" height="61" rx="14" fill="#0a0a0f"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="14" fill="none" stroke="url(#s-edge)" stroke-width="2"/>
+
+  <!-- S monogram, drawn as a path so it never depends on a font -->
+  <path d="M42 22 C42 15.5, 22 15.5, 22 25 C22 33, 42 31, 42 39 C42 48.5, 22 48.5, 22 42"
+        fill="none" stroke="url(#s-grad)" stroke-width="7"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

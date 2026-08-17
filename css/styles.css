@@ -8,8 +8,9 @@
      Chrome silver:  #e8e8f0 → #8a8a9a
    ============================================================ */
 
-/* ── Fonts ───────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;700;900&display=swap');
+/* ── Fonts ───────────────────────────────────────────────────
+   Loaded via <link> in <head> (parallel with this stylesheet)
+   instead of @import, which would serialize the two fetches. */
 
 /* ── Reset & Base ────────────────────────────────────────── */
 *, *::before, *::after {
@@ -655,16 +656,45 @@ section { position: relative; }
 }
 
 /* ============================================================
-   SHOP CTA BAND — Hero version
+   SHOP CTA BAND — sits below the work, so the sale follows the art
    ============================================================ */
-#shop-hero-band {
-  padding: 80px 0;
-  background: linear-gradient(135deg, rgba(26,58,204,0.08) 0%, rgba(107,58,255,0.06) 100%);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+#shop {
+  position: relative;
+  padding: 112px 0;
+  background: linear-gradient(135deg, rgba(26,58,204,0.10) 0%, rgba(107,58,255,0.08) 55%, rgba(217,70,239,0.06) 100%);
+  overflow: hidden;
+}
+
+/* Gradient hairlines instead of flat borders — the band reads as a deliberate
+   break in the page rather than a stray divider. */
+#shop::before,
+#shop::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--violet-1) 30%, var(--magenta) 70%, transparent);
+  opacity: 0.5;
+}
+#shop::before { top: 0; }
+#shop::after  { bottom: 0; }
+
+/* Magenta bloom behind the CTA side, echoing the hero lighting */
+.shop-glow {
+  position: absolute;
+  top: 50%;
+  right: -6%;
+  width: 620px;
+  height: 620px;
+  transform: translateY(-50%);
+  background: radial-gradient(circle, rgba(217,70,239,0.16) 0%, transparent 65%);
+  pointer-events: none;
 }
 
 .shop-band-inner {
+  position: relative;
+  z-index: 1;
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 40px;
@@ -707,33 +737,43 @@ section { position: relative; }
   margin-bottom: 64px;
 }
 
-/* Masonry / CSS columns gallery */
+/* Editorial grid. Every piece is shot 4:5, so a real grid (rather than the
+   old CSS-columns masonry) keeps rows aligned AND lets the lead piece span
+   a 2×2 block — the catalogue gets a focal point instead of nine equal tiles. */
 .gallery-grid {
-  columns: 3;
-  column-gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 
 .gallery-item {
-  break-inside: avoid;
-  margin-bottom: 16px;
   position: relative;
   overflow: hidden;
   cursor: pointer;
   border-radius: 2px;
   background: var(--bg-2);
+  aspect-ratio: 4 / 5;
 }
 
+/* Lead piece: 2 columns × 2 rows. aspect-ratio is released so the span
+   itself dictates the height (two rows plus the gap). */
+.gallery-item.is-feature {
+  grid-column: span 2;
+  grid-row: span 2;
+  aspect-ratio: auto;
+}
+
+/* Art is shown at full brightness — never dim the work itself */
 .gallery-item img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
-  transition: transform 0.6s var(--ease-out), filter 0.4s;
-  filter: brightness(0.85);
+  transition: transform 0.6s var(--ease-out);
 }
 
 .gallery-item:hover img {
   transform: scale(1.04);
-  filter: brightness(1);
 }
 
 .gallery-overlay {
@@ -976,9 +1016,26 @@ section { position: relative; }
   z-index: 1;
 }
 
+/* Gradient top edge that wipes in on hover — gives the flat cards some life
+   without adding another border colour. */
+.goods-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue-2), var(--violet-1), var(--magenta));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-out);
+  pointer-events: none;
+}
+.goods-card:hover::after { transform: scaleX(1); }
+
 .goods-card:hover {
   border-color: rgba(107,58,255,0.4);
-  box-shadow: 0 0 40px rgba(107,58,255,0.1);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.45), 0 0 40px rgba(107,58,255,0.12);
   transform: translateY(-4px);
 }
 
@@ -1056,11 +1113,12 @@ section { position: relative; }
 
 .location-pill {
   padding: 6px 14px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(139,92,246,0.28);
   border-radius: 100px;
+  background: rgba(107,58,255,0.06);
   font-size: 0.75rem;
   letter-spacing: 0.1em;
-  color: var(--chrome-lo);
+  color: var(--text);
 }
 
 .about-bio {
@@ -1342,7 +1400,9 @@ section { position: relative; }
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
-  .gallery-grid { columns: 2; }
+  /* Two columns: the lead piece spans the full width as a wide banner. */
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-item.is-feature { grid-column: span 2; grid-row: span 1; aspect-ratio: 16 / 10; }
   .about-grid { grid-template-columns: 1fr; gap: 48px; }
 }
 
@@ -1363,7 +1423,6 @@ section { position: relative; }
   #goods { padding: 80px 0; }
   #about { padding: 80px 0; }
 
-  .gallery-grid { columns: 2; }
   .goods-grid { grid-template-columns: 1fr; }
   .goods-card { padding: 32px 24px; }
 
@@ -1382,6 +1441,82 @@ section { position: relative; }
 }
 
 @media (max-width: 480px) {
-  .gallery-grid { columns: 1; }
+  /* Single column — the feature is just the first piece, full width. */
+  .gallery-grid { grid-template-columns: 1fr; gap: 12px; }
+  .gallery-item.is-feature { grid-column: span 1; aspect-ratio: 4 / 5; }
   .footer-top { gap: 24px; }
 }
+
+/* ============================================================
+   ADDITIONS
+   ============================================================ */
+
+/* Touch devices: hover overlays never fire, so keep captions visible */
+@media (hover: none) {
+  .gallery-overlay {
+    opacity: 1;
+    background: linear-gradient(0deg, rgba(10,10,15,0.78) 0%, transparent 38%);
+  }
+  .gallery-title,
+  .gallery-year { transform: none; }
+  .gallery-expand { display: none; }
+}
+
+/* Scroll progress — thin brand-gradient rule pinned above the nav.
+   Width is driven by --scroll-progress, set from main.js on scroll. */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(var(--scroll-progress, 0));
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--blue-2), var(--violet-1), var(--magenta));
+  z-index: 1000;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress { display: none; }
+}
+
+/* About: pronunciation hint (was an inline style) */
+.about-pron {
+  color: var(--violet-2);
+  font-size: 0.6em;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+}
+
+/* About: contact CTA */
+.about-cta { margin-top: 32px; }
+
+/* Lightbox: link from a piece to its print listing */
+.lightbox-shop-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--magenta);
+  transition: color 0.2s;
+}
+.lightbox-shop-link:hover { color: var(--chrome-hi); }
+
+/* Footer: meta row (was inline styles) */
+.footer-meta {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.footer-meta-link {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+.footer-meta-link:hover { color: var(--chrome-hi); }
+
