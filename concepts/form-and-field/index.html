@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form &amp; Field — Architecture + Interiors Studio</title>
+<meta name="description" content="Form & Field is an architecture and interiors studio designing quiet, durable spaces. Concept portfolio site.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f1ea;
+    --paper-2: #ece8de;
+    --ink: #1c1a16;
+    --ink-soft: #5c574c;
+    --clay: #b4552d;
+    --line: rgba(28, 26, 22, 0.16);
+    --display: 'Fraunces', Georgia, serif;
+    --sans: 'Space Grotesk', -apple-system, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--sans); font-weight: 300; line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--clay); color: var(--paper); }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- Nav ---------- */
+  header {
+    position: fixed; inset: 0 0 auto 0; z-index: 100; mix-blend-mode: normal;
+    transition: background 0.35s, box-shadow 0.35s;
+  }
+  header.scrolled { background: rgba(244,241,234,0.92); backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--line); }
+  .nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; }
+  .brand {
+    font-family: var(--display); font-weight: 500; font-size: 1.2rem;
+    letter-spacing: 0.02em; color: var(--ink); text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 34px; }
+  .nav-links a {
+    color: var(--ink); text-decoration: none; font-size: 0.8rem;
+    letter-spacing: 0.16em; text-transform: uppercase; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 0; bottom: -5px; height: 1px; width: 0;
+    background: var(--clay); transition: width 0.3s;
+  }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 190px 0 90px; border-bottom: 1px solid var(--line); }
+  .hero h1 {
+    font-family: var(--display); font-weight: 300;
+    font-size: clamp(3rem, 9vw, 7.5rem); line-height: 1.0; letter-spacing: -0.02em;
+  }
+  .hero h1 em { font-style: italic; color: var(--clay); }
+  .hero-row {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 40px; margin-top: 56px; flex-wrap: wrap;
+  }
+  .hero-row p { max-width: 42ch; color: var(--ink-soft); font-size: 1.02rem; }
+  .hero-row .index {
+    font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink-soft); text-align: right; line-height: 2;
+  }
+
+  /* ---------- Marquee ---------- */
+  .marquee {
+    overflow: hidden; border-bottom: 1px solid var(--line);
+    padding: 18px 0; white-space: nowrap;
+  }
+  .marquee-track { display: inline-block; animation: scroll 28s linear infinite; }
+  .marquee span {
+    font-family: var(--display); font-style: italic; font-size: 1.05rem;
+    color: var(--ink-soft); margin-right: 12px;
+  }
+  .marquee b { color: var(--clay); font-weight: 400; margin-right: 12px; }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ---------- Work ---------- */
+  section { padding: 110px 0; }
+  .sec-label {
+    display: flex; align-items: baseline; gap: 20px; margin-bottom: 60px;
+  }
+  .sec-label .num { font-family: var(--display); font-style: italic; color: var(--clay); font-size: 1rem; }
+  .sec-label h2 {
+    font-family: var(--display); font-weight: 300;
+    font-size: clamp(2rem, 4.5vw, 3.2rem); letter-spacing: -0.01em;
+  }
+  .work-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
+  .project { text-decoration: none; color: var(--ink); display: block; }
+  .project:nth-child(1) { grid-column: 1 / 8; }
+  .project:nth-child(2) { grid-column: 8 / 13; margin-top: 90px; }
+  .project:nth-child(3) { grid-column: 1 / 6; margin-top: 40px; }
+  .project:nth-child(4) { grid-column: 6 / 13; margin-top: 110px; }
+  .p-visual {
+    position: relative; overflow: hidden; background: var(--paper-2);
+    border: 1px solid var(--line);
+  }
+  .p-visual svg { display: block; width: 100%; height: auto; transition: transform 0.8s cubic-bezier(0.2, 0.6, 0.2, 1); }
+  .project:hover .p-visual svg { transform: scale(1.045); }
+  .p-meta { display: flex; justify-content: space-between; align-items: baseline; padding-top: 16px; }
+  .p-meta h3 { font-family: var(--display); font-weight: 400; font-size: 1.35rem; }
+  .p-meta span { font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
+
+  /* ---------- Studio ---------- */
+  .studio { background: var(--ink); color: var(--paper); }
+  .studio .sec-label h2 { color: var(--paper); }
+  .studio-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 80px; }
+  .studio-lede {
+    font-family: var(--display); font-weight: 300;
+    font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.35; letter-spacing: -0.01em;
+  }
+  .studio-lede em { font-style: italic; color: #d98b63; }
+  .studio-facts { display: flex; flex-direction: column; gap: 0; }
+  .fact {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 22px 0; border-bottom: 1px solid rgba(244,241,234,0.18);
+  }
+  .fact:first-child { border-top: 1px solid rgba(244,241,234,0.18); }
+  .fact .k { font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(244,241,234,0.55); }
+  .fact .v { font-family: var(--display); font-size: 1.5rem; font-weight: 300; }
+
+  /* ---------- Services ---------- */
+  .services-list { border-top: 1px solid var(--line); }
+  .service {
+    display: grid; grid-template-columns: 80px 1fr 1.2fr; gap: 32px; align-items: baseline;
+    padding: 36px 0; border-bottom: 1px solid var(--line); transition: padding-left 0.35s;
+  }
+  .service:hover { padding-left: 16px; }
+  .service .num { font-family: var(--display); font-style: italic; color: var(--clay); }
+  .service h3 { font-family: var(--display); font-weight: 400; font-size: clamp(1.3rem, 2.6vw, 1.9rem); }
+  .service p { color: var(--ink-soft); font-size: 0.95rem; max-width: 52ch; }
+
+  /* ---------- Contact ---------- */
+  .contact { border-top: 1px solid var(--line); padding-bottom: 60px; }
+  .contact h2 {
+    font-family: var(--display); font-weight: 300;
+    font-size: clamp(2.6rem, 7vw, 5.5rem); line-height: 1.05; letter-spacing: -0.02em;
+    max-width: 14ch;
+  }
+  .contact h2 a { color: var(--ink); text-decoration: none; }
+  .contact h2 a em { font-style: italic; color: var(--clay); position: relative; }
+  .contact h2 a:hover em { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px; }
+  .contact-row { display: flex; gap: 64px; margin-top: 64px; flex-wrap: wrap; }
+  .contact-col h4 { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 10px; font-weight: 400; }
+  .contact-col p, .contact-col a { color: var(--ink); font-size: 0.95rem; text-decoration: none; }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 30px 0;
+    font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.85s ease, transform 0.85s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .work-grid { display: flex; flex-direction: column; gap: 44px; }
+    .project { margin-top: 0 !important; }
+    .studio-grid { grid-template-columns: 1fr; gap: 48px; }
+    .service { grid-template-columns: 48px 1fr; }
+    .service p { grid-column: 2; }
+    section { padding: 76px 0; }
+    .hero { padding-top: 150px; }
+  }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a class="brand" href="#">Form &amp; Field</a>
+    <nav class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#studio">Studio</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Quiet buildings<br>for <em>loud</em> lives.</h1>
+    <div class="hero-row">
+      <p>Form &amp; Field is an architecture and interiors studio. We design homes, workplaces, and public rooms that age well — built from honest materials, shaped by light.</p>
+      <div class="index">Portland, OR<br>Est. 2014 · 23 built works</div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Residential</span><b>·</b><span>Workplace</span><b>·</b><span>Hospitality</span><b>·</b><span>Adaptive Reuse</span><b>·</b><span>Interiors</span><b>·</b><span>Residential</span><b>·</b><span>Workplace</span><b>·</b><span>Hospitality</span><b>·</b><span>Adaptive Reuse</span><b>·</b><span>Interiors</span><b>·</b>
+  </div>
+</div>
+
+<section id="work">
+  <div class="wrap">
+    <div class="sec-label reveal">
+      <span class="num">01</span>
+      <h2>Selected Work</h2>
+    </div>
+    <div class="work-grid">
+      <a class="project reveal" href="#">
+        <div class="p-visual">
+          <svg viewBox="0 0 700 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hillside House elevation">
+            <rect width="700" height="460" fill="#dcd6c8"/>
+            <rect x="0" y="330" width="700" height="130" fill="#c9c2b0"/>
+            <polygon points="0,340 700,300 700,460 0,460" fill="#b8b09c" opacity="0.5"/>
+            <rect x="140" y="170" width="420" height="170" fill="#f4f1ea" stroke="#1c1a16" stroke-width="2"/>
+            <rect x="360" y="200" width="160" height="140" fill="#1c1a16" opacity="0.85"/>
+            <rect x="380" y="220" width="55" height="100" fill="#e8b487" opacity="0.9"/>
+            <rect x="450" y="220" width="55" height="100" fill="#d98b63" opacity="0.7"/>
+            <line x1="140" y1="170" x2="560" y2="170" stroke="#1c1a16" stroke-width="6"/>
+            <rect x="165" y="205" width="150" height="105" fill="#9fb4a8" opacity="0.7"/>
+            <line x1="240" y1="205" x2="240" y2="310" stroke="#1c1a16" stroke-width="2"/>
+            <circle cx="600" cy="90" r="34" fill="#b4552d" opacity="0.85"/>
+          </svg>
+        </div>
+        <div class="p-meta"><h3>Hillside House</h3><span>Residential · 2025</span></div>
+      </a>
+      <a class="project reveal" href="#">
+        <div class="p-visual">
+          <svg viewBox="0 0 520 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Foundry Workroom interior">
+            <rect width="520" height="560" fill="#d5cfbf"/>
+            <polygon points="0,80 260,10 520,80 520,560 0,560" fill="#e6e1d4"/>
+            <polygon points="0,80 260,10 520,80" fill="none" stroke="#1c1a16" stroke-width="3"/>
+            <rect x="70" y="140" width="110" height="420" fill="#9fb4a8" opacity="0.55"/>
+            <rect x="340" y="140" width="110" height="420" fill="#9fb4a8" opacity="0.35"/>
+            <line x1="125" y1="140" x2="125" y2="560" stroke="#1c1a16" stroke-width="2"/>
+            <line x1="395" y1="140" x2="395" y2="560" stroke="#1c1a16" stroke-width="2"/>
+            <rect x="210" y="330" width="100" height="230" fill="#1c1a16"/>
+            <rect x="230" y="360" width="60" height="120" fill="#e8b487" opacity="0.9"/>
+            <line x1="0" y1="470" x2="520" y2="470" stroke="#1c1a16" stroke-width="2" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="p-meta"><h3>Foundry Workroom</h3><span>Adaptive Reuse · 2024</span></div>
+      </a>
+      <a class="project reveal" href="#">
+        <div class="p-visual">
+          <svg viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Saltbox Inn facade">
+            <rect width="520" height="400" fill="#cfd8d4"/>
+            <rect x="0" y="290" width="520" height="110" fill="#b8c4be"/>
+            <polygon points="110,120 260,40 410,120" fill="#1c1a16"/>
+            <rect x="110" y="120" width="300" height="170" fill="#f4f1ea" stroke="#1c1a16" stroke-width="2"/>
+            <rect x="150" y="160" width="50" height="90" fill="#b4552d" opacity="0.85"/>
+            <rect x="235" y="160" width="50" height="130" fill="#1c1a16"/>
+            <rect x="320" y="160" width="50" height="90" fill="#9fb4a8"/>
+            <circle cx="80" cy="70" r="26" fill="#e8b487" opacity="0.9"/>
+          </svg>
+        </div>
+        <div class="p-meta"><h3>Saltbox Inn</h3><span>Hospitality · 2024</span></div>
+      </a>
+      <a class="project reveal" href="#">
+        <div class="p-visual">
+          <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Meridian Commons plan">
+            <rect width="700" height="420" fill="#e0dbcd"/>
+            <rect x="60" y="60" width="580" height="300" fill="none" stroke="#1c1a16" stroke-width="3"/>
+            <rect x="60" y="60" width="240" height="150" fill="#9fb4a8" opacity="0.5"/>
+            <rect x="300" y="60" width="180" height="300" fill="#f4f1ea"/>
+            <rect x="480" y="210" width="160" height="150" fill="#b4552d" opacity="0.7"/>
+            <line x1="300" y1="60" x2="300" y2="360" stroke="#1c1a16" stroke-width="2"/>
+            <line x1="480" y1="60" x2="480" y2="360" stroke="#1c1a16" stroke-width="2"/>
+            <line x1="60" y1="210" x2="300" y2="210" stroke="#1c1a16" stroke-width="2"/>
+            <line x1="480" y1="210" x2="640" y2="210" stroke="#1c1a16" stroke-width="2"/>
+            <circle cx="390" cy="210" r="46" fill="none" stroke="#1c1a16" stroke-width="2" stroke-dasharray="6 6"/>
+            <circle cx="390" cy="210" r="6" fill="#1c1a16"/>
+          </svg>
+        </div>
+        <div class="p-meta"><h3>Meridian Commons</h3><span>Workplace · 2023</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="studio" id="studio">
+  <div class="wrap">
+    <div class="sec-label reveal">
+      <span class="num">02</span>
+      <h2>The Studio</h2>
+    </div>
+    <div class="studio-grid">
+      <p class="studio-lede reveal">We believe the best spaces are the ones you stop noticing — rooms that hold <em>morning light</em>, materials that wear in instead of wearing out, and details that reward a second look.</p>
+      <div class="studio-facts reveal">
+        <div class="fact"><span class="k">Founded</span><span class="v">2014</span></div>
+        <div class="fact"><span class="k">Built works</span><span class="v">23</span></div>
+        <div class="fact"><span class="k">Design awards</span><span class="v">11</span></div>
+        <div class="fact"><span class="k">Team</span><span class="v">9 people</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="sec-label reveal">
+      <span class="num">03</span>
+      <h2>Services</h2>
+    </div>
+    <div class="services-list">
+      <div class="service reveal">
+        <span class="num">a.</span>
+        <h3>Architecture</h3>
+        <p>Full-service design from first sketch to final walkthrough — new builds, additions, and ground-up renovations for residential and commercial clients.</p>
+      </div>
+      <div class="service reveal">
+        <span class="num">b.</span>
+        <h3>Interiors</h3>
+        <p>Material palettes, custom millwork, lighting, and furnishing plans that carry the architecture's intent all the way down to the door pull.</p>
+      </div>
+      <div class="service reveal">
+        <span class="num">c.</span>
+        <h3>Adaptive Reuse</h3>
+        <p>Giving old structures second lives — warehouses to workplaces, barns to homes — preserving character while meeting modern code and comfort.</p>
+      </div>
+      <div class="service reveal">
+        <span class="num">d.</span>
+        <h3>Feasibility &amp; Planning</h3>
+        <p>Site studies, zoning analysis, and early-stage massing so you know what's possible before you commit to a property or a budget.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="reveal">
+      <h2><a href="mailto:studio@formandfield.example">Have a site in mind? <em>Let's walk it together.</em></a></h2>
+      <div class="contact-row">
+        <div class="contact-col">
+          <h4>Studio</h4>
+          <p>318 NW Marshall St<br>Portland, OR 97209</p>
+        </div>
+        <div class="contact-col">
+          <h4>Inquiries</h4>
+          <p><a href="mailto:studio@formandfield.example">studio@formandfield.example</a><br>(555) 014-8837</p>
+        </div>
+        <div class="contact-col">
+          <h4>Elsewhere</h4>
+          <p><a href="#">Instagram</a> · <a href="#">Are.na</a> · <a href="#">Journal</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Form &amp; Field</span>
+    <span>Concept design — not a real studio</span>
+  </div>
+</footer>
+
+<script>
+  const header = document.getElementById('header');
+  addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 40), { passive: true });
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

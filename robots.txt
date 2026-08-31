@@ -1,0 +1,9 @@
+# schuy.xyz
+User-agent: *
+Allow: /
+
+# Vendored library code and raw model data — no reason to spend crawl budget here.
+Disallow: /js/vendor/
+Disallow: /images/work/hero.glb
+
+Sitemap: https://schuy.xyz/sitemap.xml

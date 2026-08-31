@@ -34,6 +34,19 @@ const BLINK_MAX      = 0.6;  // upper-lid rotation when fully shut (radians)
 const BLINK_LOWER    = 0.25; // how much the lower lid joins, as a fraction
 const BLINK_SIGN     = 1;    // flip if eyes open instead of close
 
+/* The model is by far the heaviest thing on the page. On a metered or slow
+   connection the placeholder solid is a far better trade than several
+   seconds of blocking download for decoration, so skip the GLB entirely and
+   let the placeholder stand in. Desktop and any normal connection are
+   unaffected — this only fires on an explicit Save-Data request or a
+   connection the browser itself reports as 2g-class. */
+function prefersLightHero() {
+  const c = navigator.connection;
+  if (!c) return false;
+  if (c.saveData) return true;
+  return ['slow-2g', '2g'].includes(c.effectiveType);
+}
+
 const mount = document.getElementById('hero-3d');
 if (mount) initHero3D(mount);
 
@@ -151,55 +164,66 @@ function initHero3D(mount) {
   }
 
   // ── Load the Blender GLB (falls back to placeholder) ──
-  const draco = new DRACOLoader();
-  draco.setDecoderPath('https://unpkg.com/three@0.160.0/examples/jsm/libs/draco/');
-  const gltfLoader = new GLTFLoader();
-  gltfLoader.setDRACOLoader(draco);
+  // On Save-Data / 2g the placeholder is the final state: never start the
+  // multi-megabyte download. Everything below this block — controls, resize,
+  // the render loop — still has to run, so this only skips the fetch.
+  if (prefersLightHero()) {
+    showPlaceholder();
+  } else {
+    loadModel();
+  }
 
-  gltfLoader.load(
-    MODEL_URL,
-    (gltf) => {
-      const model = gltf.scene;
-      frameObject(model);
-      group.add(model);
-      spinObject = model;
-      if (loaderEl) loaderEl.style.display = 'none';
+  function loadModel() {
+    const draco = new DRACOLoader();
+    draco.setDecoderPath('js/vendor/three/draco/');
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.setDRACOLoader(draco);
 
-      // Grab eyelid bones for blinking (skip under reduced-motion).
-      if (!reduceMotion) {
-        const grab = (names) => names
-          .map((n) => { const b = model.getObjectByName(n); return b ? { bone: b, base: b.quaternion.clone() } : null; })
-          .filter(Boolean);
-        const upper = grab(['lEyelidUpper', 'lEyelidUpperInner', 'lEyelidUpperOuter',
-                            'rEyelidUpper', 'rEyelidUpperInner', 'rEyelidUpperOuter']);
-        const lower = grab(['lEyelidLower', 'lEyelidLowerInner', 'lEyelidLowerOuter',
-                            'rEyelidLower', 'rEyelidLowerInner', 'rEyelidLowerOuter']);
-        if (upper.length) {
-          eyeRig = { upper, lower };
-          nextBlinkAt = performance.now() / 1000 + rand(BLINK_MIN_GAP, BLINK_MAX_GAP);
+    gltfLoader.load(
+      MODEL_URL,
+      (gltf) => {
+        const model = gltf.scene;
+        frameObject(model);
+        group.add(model);
+        spinObject = model;
+        if (loaderEl) loaderEl.style.display = 'none';
+
+        // Grab eyelid bones for blinking (skip under reduced-motion).
+        if (!reduceMotion) {
+          const grab = (names) => names
+            .map((n) => { const b = model.getObjectByName(n); return b ? { bone: b, base: b.quaternion.clone() } : null; })
+            .filter(Boolean);
+          const upper = grab(['lEyelidUpper', 'lEyelidUpperInner', 'lEyelidUpperOuter',
+                              'rEyelidUpper', 'rEyelidUpperInner', 'rEyelidUpperOuter']);
+          const lower = grab(['lEyelidLower', 'lEyelidLowerInner', 'lEyelidLowerOuter',
+                              'rEyelidLower', 'rEyelidLowerInner', 'rEyelidLowerOuter']);
+          if (upper.length) {
+            eyeRig = { upper, lower };
+            nextBlinkAt = performance.now() / 1000 + rand(BLINK_MIN_GAP, BLINK_MAX_GAP);
+          }
         }
-      }
 
-      // Grab the head/neck bones for cursor tracking (desktop).
-      if (wantsHeadFollow) {
-        const head = model.getObjectByName('head');
-        const neck = model.getObjectByName('neckUpper') || model.getObjectByName('neckLower');
-        if (head) {
-          headRig = {
-            head, neck,
-            baseHead: head.quaternion.clone(),
-            baseNeck: neck ? neck.quaternion.clone() : null,
-          };
+        // Grab the head/neck bones for cursor tracking (desktop).
+        if (wantsHeadFollow) {
+          const head = model.getObjectByName('head');
+          const neck = model.getObjectByName('neckUpper') || model.getObjectByName('neckLower');
+          if (head) {
+            headRig = {
+              head, neck,
+              baseHead: head.quaternion.clone(),
+              baseNeck: neck ? neck.quaternion.clone() : null,
+            };
+          }
         }
+      },
+      undefined,
+      () => {
+        // No GLB yet (or failed to load) → show placeholder.
+        console.info('[hero3d] %s not found — showing placeholder.', MODEL_URL);
+        showPlaceholder();
       }
-    },
-    undefined,
-    () => {
-      // No GLB yet (or failed to load) → show placeholder.
-      console.info('[hero3d] %s not found — showing placeholder.', MODEL_URL);
-      showPlaceholder();
-    }
-  );
+    );
+  }
 
   // ── Controls (orbit by drag; no zoom/pan) ──
   // Desktop (mouse) only: drag to orbit + cursor head-follow. Touch devices get

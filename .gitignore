@@ -1,0 +1,6 @@
+# Uncompressed GLB masters kept next to the shipped model. Draco is lossy,
+# so the original is worth keeping locally — but it is many times the size
+# of what actually ships and has no business in the repo.
+*.orig.glb
+
+.DS_Store

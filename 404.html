@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Not Found | Schuy</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <meta name="theme-color" content="#0a0a0f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=Barlow+Condensed:wght@700;900&display=swap">
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    /* Standalone page — the shared stylesheet carries the palette and type,
+       this only lays out the single centred block. */
+    .nf-wrap {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .nf-glow {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 40%, rgba(107,58,255,0.16) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 65% 60%, rgba(217,70,239,0.08) 0%, transparent 65%);
+    }
+    .nf-inner { position: relative; z-index: 1; }
+    .nf-code {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(6rem, 22vw, 14rem);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: 0.04em;
+    }
+    .nf-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--chrome-hi);
+      margin-top: 8px;
+    }
+    .nf-sub {
+      color: var(--chrome-lo);
+      max-width: 44ch;
+      margin: 18px auto 36px;
+      font-size: 0.95rem;
+    }
+    .nf-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <div class="nf-wrap">
+    <div class="nf-glow" aria-hidden="true"></div>
+    <div class="nf-inner">
+      <p class="nf-code chrome-text">404</p>
+      <h1 class="nf-title">Off the Canvas</h1>
+      <p class="nf-sub">That page doesn't exist &mdash; or it moved. The work is still where you left it.</p>
+      <div class="nf-ctas">
+        <a href="/" class="btn btn-primary">Back to Schuy</a>
+        <a href="/#work" class="btn btn-ghost">View the Catalogue</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

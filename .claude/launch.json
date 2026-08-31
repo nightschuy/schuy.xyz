@@ -4,8 +4,58 @@
     {
       "name": "schuy-xyz",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4444"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4444"
+      ],
       "port": 4444
+    },
+    {
+      "name": "chill-originals",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4445",
+        "--directory",
+        "/Users/schuylerhample/Claude Code/Chill Originals"
+      ],
+      "port": 4445
+    },
+    {
+      "name": "schuylerhample-com",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4446",
+        "--directory",
+        "/Users/schuylerhample/Claude Code/schuylerhample.com"
+      ],
+      "port": 4446
+    },
+    {
+      "name": "rsm-exit-readiness",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4447",
+        "--directory",
+        "/Users/schuylerhample/Claude Code/rsm-exit-readiness"
+      ],
+      "port": 4447
+    },
+    {
+      "name": "schuy-xyz-verify",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4455"
+      ],
+      "port": 4455
     }
   ]
 }

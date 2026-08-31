@@ -29,6 +29,71 @@
   <meta name="twitter:image"       content="https://schuy.xyz/images/og-image.jpg">
   <meta name="twitter:image:alt"   content="SCHUY — Visual Art + Design. Three digital artworks in deep blue and violet.">
 
+  <!-- ── Structured data ──────────────────────────────────────
+       Static rather than generated from GALLERY_ITEMS at runtime: crawlers
+       index this reliably without executing the gallery script. Keep the
+       artwork list in sync with GALLERY_ITEMS in js/main.js. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://schuy.xyz/#person",
+        "name": "Schuyler Hample",
+        "alternateName": "Schuy",
+        "url": "https://schuy.xyz/",
+        "image": "https://schuy.xyz/images/og-image.jpg",
+        "jobTitle": "Digital Artist & Designer",
+        "email": "mailto:schuyler.hample@gmail.com",
+        "description": "Digital artist and designer working between Charleston, SC and South Florida. Fine art prints, design assets, and VJ loops.",
+        "knowsAbout": ["Digital Art", "Graphic Design", "Motion Graphics", "VJ Loops", "3D Rendering"],
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Charleston",
+          "addressRegion": "SC",
+          "addressCountry": "US"
+        },
+        "sameAs": [
+          "https://instagram.com/schuy.xyz",
+          "https://www.tiktok.com/@schuy.xyz",
+          "https://www.pinterest.com/schuyhigher/",
+          "https://www.behance.net/schuy",
+          "https://schuyxyz.etsy.com"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://schuy.xyz/#website",
+        "url": "https://schuy.xyz/",
+        "name": "Schuy",
+        "description": "Digital artist & designer. Fine art prints, design assets, and VJ loops.",
+        "publisher": { "@id": "https://schuy.xyz/#person" },
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "CollectionPage",
+        "@id": "https://schuy.xyz/#catalogue",
+        "url": "https://schuy.xyz/#work",
+        "name": "The Catalogue",
+        "isPartOf": { "@id": "https://schuy.xyz/#website" },
+        "about": { "@id": "https://schuy.xyz/#person" },
+        "hasPart": [
+          { "@type": "VisualArtwork", "name": "Saturn",     "dateCreated": "2025", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/saturn.jpg" },
+          { "@type": "VisualArtwork", "name": "Shattered",  "dateCreated": "2025", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/shattered.jpg" },
+          { "@type": "VisualArtwork", "name": "Boogie",     "dateCreated": "2025", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/boogie.jpg" },
+          { "@type": "VisualArtwork", "name": "Partner",    "dateCreated": "2025", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/partner.jpg" },
+          { "@type": "VisualArtwork", "name": "Viber",      "dateCreated": "2024", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/viber.jpg" },
+          { "@type": "VisualArtwork", "name": "Skullmance", "dateCreated": "2024", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/skullmance.jpg" },
+          { "@type": "VisualArtwork", "name": "Return",     "dateCreated": "2025", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/return.jpg" },
+          { "@type": "VisualArtwork", "name": "Focus",      "dateCreated": "2023", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/focus.jpg" },
+          { "@type": "VisualArtwork", "name": "Fixed",      "dateCreated": "2024", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/fixed.jpg" }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <!-- ── Favicon ──────────────────────────────────────────── -->
   <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <meta name="theme-color" content="#0a0a0f">
@@ -40,12 +105,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;700;900&display=swap">
 
   <!-- ── Styles ───────────────────────────────────────────── -->
-  <link rel="stylesheet" href="css/styles.css?v=20260817-1">
+  <link rel="stylesheet" href="css/styles.css?v=20260830-1">
 
   <!-- ── Google Analytics 4 ──────────────────────────────── -->
-  <!-- GA4 is consent-gated: initialized by js/cookie-consent.js only after
-       the visitor clicks Accept. Replace G-XXXXXXXXXX in cookie-consent.js
-       with your real Measurement ID from analytics.google.com → Admin → Data Streams. -->
+  <!-- GA4 is consent-gated: gtag is not loaded at all until the visitor
+       clicks Accept. Measurement ID lives in js/cookie-consent.js. -->
   <!-- ── END Google Analytics ─────────────────────────────── -->
 </head>
 <body>
@@ -66,6 +130,7 @@
     <li><a href="#work">Work</a></li>
     <li><a href="#shop">Shop</a></li>
     <li><a href="#goods">Goods</a></li>
+    <li><a href="#design">Design</a></li>
     <li><a href="#about">About</a></li>
   </ul>
 
@@ -80,6 +145,7 @@
     <li><a href="#work">Work</a></li>
     <li><a href="#shop">Shop</a></li>
     <li><a href="#goods">Goods</a></li>
+    <li><a href="#design">Design</a></li>
     <li><a href="#about">About</a></li>
   </ul>
 </div>
@@ -190,6 +256,62 @@
 </section>
 
 <!-- ============================================================
+     DROPS — email capture
+     Sits right after the shop band: the band promises "Limited Drops",
+     this is the only way to actually hear about the next one.
+     ============================================================ -->
+<section id="drops" aria-labelledby="drops-heading">
+  <div class="section-inner">
+    <div class="drops-card reveal">
+      <div class="drops-copy">
+        <p class="section-label">The List</p>
+        <h2 id="drops-heading" class="drops-heading">Know About the Next Drop First</h2>
+        <p class="drops-sub">New prints, new loops, early access. No noise &mdash; a few emails a year, and only when there's something to see.</p>
+      </div>
+
+      <!--
+        Web3forms. The access_key is public by design (Web3forms' own docs
+        say so) — it only identifies which inbox a submission is emailed to.
+        The same key backs the contact form in the About section.
+
+        NOTE: Web3forms emails you each signup — it is not a mailing list, so
+        there is no broadcast to send when a drop lands. Fine for collecting
+        names now; move them into a real ESP before the first send. The
+        submit path in js/main.js works unchanged against one.
+      -->
+      <form
+        class="drops-form"
+        id="drops-form"
+        method="post"
+        action="https://api.web3forms.com/submit"
+        data-endpoint="https://api.web3forms.com/submit"
+        novalidate
+      >
+        <input type="hidden" name="access_key" value="3dbf7de0-9676-49b4-ace3-a4ae37e53a4a">
+        <input type="hidden" name="subject" value="New drops-list signup — schuy.xyz">
+        <input type="hidden" name="from_name" value="schuy.xyz">
+
+        <label class="visually-hidden" for="drops-email">Email address</label>
+        <div class="drops-field">
+          <input
+            type="email"
+            id="drops-email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+          <button type="submit" class="btn btn-primary drops-submit">Join</button>
+        </div>
+        <!-- Web3forms' own honeypot convention — bots tick it, humans can't see it. -->
+        <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" aria-hidden="true">
+        <p class="drops-status" id="drops-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
      DIGITAL GOODS
      ============================================================ -->
 <section id="goods" aria-labelledby="goods-heading">
@@ -256,6 +378,44 @@
 </section>
 
 <!-- ============================================================
+     DESIGN — concept sites
+     The "+ Design" half of the tagline. These were already built and
+     sitting at /concepts/ with nothing linking to them.
+     ============================================================ -->
+<section id="design" aria-labelledby="design-heading">
+  <div class="section-inner">
+    <div class="design-header">
+      <p class="section-label reveal">Design</p>
+      <h2 id="design-heading" class="section-heading reveal reveal-delay-1">Sites, Built From Scratch</h2>
+      <p class="design-intro reveal reveal-delay-2">Three concept builds &mdash; each designed and hand-coded for a different kind of business. No templates, no page builders.</p>
+    </div>
+
+    <div class="design-grid">
+      <a href="concepts/ember-and-oak/" class="design-card reveal reveal-delay-1" data-track="concept" data-concept="ember-and-oak">
+        <span class="design-mark" aria-hidden="true">E&amp;O</span>
+        <h3 class="design-title">Ember &amp; Oak</h3>
+        <p class="design-desc">Wood-fired restaurant &mdash; dark, editorial, reservation-focused.</p>
+        <p class="design-for">Restaurants, bars &amp; hospitality</p>
+      </a>
+
+      <a href="concepts/driftline/" class="design-card reveal reveal-delay-2" data-track="concept" data-concept="driftline">
+        <span class="design-mark" aria-hidden="true">DL</span>
+        <h3 class="design-title">Driftline</h3>
+        <p class="design-desc">SaaS landing page &mdash; feature grid, pricing, mock product UI.</p>
+        <p class="design-for">Startups &amp; software products</p>
+      </a>
+
+      <a href="concepts/form-and-field/" class="design-card reveal reveal-delay-3" data-track="concept" data-concept="form-and-field">
+        <span class="design-mark" aria-hidden="true">F&amp;F</span>
+        <h3 class="design-title">Form &amp; Field</h3>
+        <p class="design-desc">Architecture &amp; interiors studio &mdash; minimal, big type, project gallery.</p>
+        <p class="design-for">Studios, agencies &amp; portfolios</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
      ABOUT
      ============================================================ -->
 <section id="about" aria-labelledby="about-heading">
@@ -288,16 +448,74 @@
           <p>
             Available for select collaborations, commissions, and creative direction.
           </p>
-          <a
-            href="mailto:schuyler.hample@gmail.com?subject=Commission%20inquiry"
-            class="btn btn-ghost about-cta"
-            data-track="contact"
-            aria-label="Email Schuy about a commission or collaboration"
-          >
-            Get in Touch
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
         </div>
+
+        <!--
+          Web3forms, same public access key as the drops form. If the key is
+          ever blanked out, the form hides itself and the mailto link below
+          becomes the live path again — there is always a way to reach you.
+        -->
+        <form
+          class="contact-form reveal reveal-delay-2"
+          id="contact-form"
+          method="post"
+          action="https://api.web3forms.com/submit"
+          data-endpoint="https://api.web3forms.com/submit"
+          hidden
+          novalidate
+        >
+          <input type="hidden" name="access_key" value="3dbf7de0-9676-49b4-ace3-a4ae37e53a4a">
+          <input type="hidden" name="subject" value="New commission inquiry — schuy.xyz">
+
+          <p class="contact-form-label">Start a project</p>
+
+          <div class="contact-row">
+            <div class="contact-field">
+              <label for="contact-name">Name</label>
+              <input type="text" id="contact-name" name="name" autocomplete="name" required>
+            </div>
+            <div class="contact-field">
+              <label for="contact-email">Email</label>
+              <input type="email" id="contact-email" name="email" autocomplete="email" required>
+            </div>
+          </div>
+
+          <div class="contact-field">
+            <label for="contact-type">What's the project?</label>
+            <select id="contact-type" name="project_type">
+              <option value="commission">Commission &mdash; original artwork</option>
+              <option value="print">Print or apparel question</option>
+              <option value="visuals">Stage / VJ visuals</option>
+              <option value="design">Design or creative direction</option>
+              <option value="other">Something else</option>
+            </select>
+          </div>
+
+          <div class="contact-field">
+            <label for="contact-message">Details</label>
+            <textarea id="contact-message" name="message" rows="4" placeholder="Timeline, scale, budget range — whatever you've got." required></textarea>
+          </div>
+
+          <!-- Web3forms' own honeypot convention -->
+          <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" aria-hidden="true">
+
+          <button type="submit" class="btn btn-primary contact-submit">
+            Send Inquiry
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <a
+          href="mailto:schuyler.hample@gmail.com?subject=Commission%20inquiry"
+          class="btn btn-ghost about-cta"
+          id="about-mailto"
+          data-track="contact"
+          aria-label="Email Schuy about a commission or collaboration"
+        >
+          Get in Touch
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
       </div>
 
     </div>
@@ -317,6 +535,7 @@
           <li><a href="#work">Work</a></li>
           <li><a href="#shop">Shop</a></li>
           <li><a href="#goods">Goods</a></li>
+          <li><a href="#design">Design</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="mailto:schuyler.hample@gmail.com" data-track="contact">Contact</a></li>
         </ul>
@@ -364,19 +583,6 @@
             <path fill="currentColor" stroke="none" d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345c-.091.378-.293 1.193-.333 1.36-.052.22-.174.266-.402.16-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/>
           </svg>
         </a>
-        <a
-          href="https://www.behance.net/schuy"
-          class="footer-social-btn"
-          target="_blank"
-          rel="noopener noreferrer"
-          data-track="social"
-          data-platform="behance"
-          aria-label="Behance — @schuy"
-        >
-          <svg viewBox="0 0 576 512" aria-hidden="true">
-            <path fill="currentColor" stroke="none" d="M232 237.2c31.8-15.2 48.4-38.2 48.4-74 0-70.6-52.6-87.8-113.3-87.8H0v354.4h171.8c64.4 0 124.9-30.9 124.9-102.9 0-44.5-21.1-77.4-64.7-89.7zM77.9 135.9h74.5c28.7 0 54.5 8 54.5 41.3 0 30.7-20.1 43-48.5 43H77.9V135.9zm78.7 207.5H77.9V233.6h80.2c34.9 0 57.2 14.6 57.2 51.8 0 36.5-26.5 58-63.6 58zM575.7 268.9c0-77.8-45.5-142.6-127.8-142.6-79.9 0-134.2 60.1-134.2 139 0 81.8 51.5 137.8 134.2 137.8 62.5 0 103-28.1 122.7-88.1h-66.5c-6.9 22.4-34.9 34.1-56.7 34.1-42.1 0-64.2-24.7-64.2-66.6h192.1c.3-4.2.4-8.4.4-12.6zM383.6 225.1c2.3-34.5 26.6-55.9 60.9-55.9 36 0 53.9 21.2 57 55.9H383.6zM360 103.4h128v32H360z"/>
-          </svg>
-        </a>
       </div>
     </div>
 
@@ -407,9 +613,12 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
   </button>
   <div class="lightbox-img-wrap">
-    <!-- No src until a piece is opened — an empty src makes the browser
-         re-request the page itself as an image. -->
-    <img id="lightbox-img" alt="">
+    <!-- No src/srcset until a piece is opened — an empty src makes the
+         browser re-request the page itself as an image. -->
+    <picture>
+      <source id="lightbox-avif" type="image/avif">
+      <img id="lightbox-img" alt="">
+    </picture>
     <div class="lightbox-caption" id="lightbox-caption"></div>
   </div>
   <button id="lightbox-next"  class="lightbox-nav"  aria-label="Next image">
@@ -435,18 +644,22 @@
 
 <!-- ── Scripts ───────────────────────────────────────────── -->
 <script src="js/cookie-consent.js"></script>
-<script src="js/main.js?v=20260817-1"></script>
+<script src="js/main.js?v=20260830-1"></script>
 
-<!-- ── three.js (ESM via CDN import-map — no build step) ──── -->
+<!-- ── three.js r160 (self-hosted ESM via import-map — no build step) ──
+     Vendored under js/vendor/three/ rather than pulled from unpkg: a CDN
+     outage would otherwise take the hero down, and it kept a third-party
+     request firing before the consent banner resolved. Update by re-running
+     tools/fetch-three.sh with a new version. -->
 <script type="importmap">
 {
   "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    "three": "./js/vendor/three/three.module.js",
+    "three/addons/": "./js/vendor/three/addons/"
   }
 }
 </script>
-<script type="module" src="js/hero3d.js?v=20260817-1"></script>
+<script type="module" src="js/hero3d.js?v=20260830-1"></script>
 
 </body>
 </html>

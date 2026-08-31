@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLightbox();
   initScrollReveal();
   initCursorGlow();
+  initForms();
   initAnalyticsEvents();
   updateFooterYear();
 });
@@ -59,19 +60,46 @@ function initNav() {
   onScroll();
 
   if (toggle && drawer) {
-    toggle.addEventListener('click', () => {
-      const open = drawer.classList.toggle('open');
+    const setDrawer = (open, returnFocus) => {
+      drawer.classList.toggle('open', open);
       toggle.classList.toggle('open', open);
-      toggle.setAttribute('aria-expanded', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      // The drawer covers the page when open; its links must not be
+      // reachable by keyboard while it is closed.
+      drawer.setAttribute('aria-hidden', String(!open));
+      if (!open && returnFocus) toggle.focus();
+    };
+
+    setDrawer(false, false);
+
+    toggle.addEventListener('click', () => {
+      const open = !drawer.classList.contains('open');
+      setDrawer(open, false);
+      // The drawer is visibility:hidden until the class lands, and calling
+      // focus() on a still-hidden element silently does nothing — so let the
+      // style apply first. A timer rather than rAF: rAF is suspended while
+      // the page is hidden, which would strand focus on <body>.
+      if (open) setTimeout(() => drawer.querySelector('a')?.focus(), 0);
     });
 
     // Close on link click
     drawer.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        drawer.classList.remove('open');
-        toggle.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-      });
+      a.addEventListener('click', () => setDrawer(false, false));
+    });
+
+    // Escape closes it and puts focus back on the toggle, so a keyboard user
+    // isn't stranded in a panel they can't see.
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) {
+        setDrawer(false, true);
+      }
+    });
+
+    // A tap outside the drawer closes it too.
+    document.addEventListener('click', e => {
+      if (!drawer.classList.contains('open')) return;
+      if (drawer.contains(e.target) || toggle.contains(e.target)) return;
+      setDrawer(false, false);
     });
   }
 }
@@ -228,21 +256,51 @@ function initHeroReveal() {
    ============================================================ */
 
 // ── Add or remove entries to update the gallery ───────────
-// Put image files in /images/work/ and add an entry here.
-// Optional `shop` field: URL of the piece's print listing — shows an
-// "Available as print" link in the lightbox. Use the exact Etsy listing
-// URL per piece; the shop root is a placeholder for the mockup.
+// Put the full-size JPEG in /images/work/, then run tools/make-avif.sh to
+// generate the responsive AVIF derivatives in /images/work/avif/, then add
+// an entry here.
+//
+//   name    file stem, shared by the JPEG and every AVIF derivative
+//   w, h    native pixel dimensions of the JPEG (sets the aspect ratio box)
+//   medium  what it is, in the artist's words — shown in the lightbox
+//   edition e.g. 'Edition of 25' or 'Open edition'
+//   price   display string, e.g. 'From $65'
+//   shop    DEEP link to this piece's own listing, not the shop root.
+//           Without it the lightbox shows no purchase link at all.
 const GALLERY_ITEMS = [
-  { src: 'images/work/saturn.jpg',     title: 'Saturn',       year: '2025', shop: 'https://schuyxyz.etsy.com' },
-  { src: 'images/work/shattered.jpg',  title: 'Shattered',    year: '2025', shop: 'https://schuyxyz.etsy.com' },
-  { src: 'images/work/boogie.jpg',     title: 'Boogie',       year: '2025' },
-  { src: 'images/work/partner.jpg',    title: 'Partner',      year: '2025' },
-  { src: 'images/work/viber.jpg',      title: 'Viber',        year: '2024' },
-  { src: 'images/work/skullmance.jpg', title: 'Skullmance',   year: '2024', shop: 'https://schuyxyz.etsy.com' },
-  { src: 'images/work/return.jpg',     title: 'Return',       year: '2025' },
-  { src: 'images/work/focus.jpg',      title: 'Focus',        year: '2023' },
-  { src: 'images/work/fixed.jpg',      title: 'Fixed',        year: '2024' },
+  // TODO(schuy): replace each `shop` with that piece's own Etsy listing URL,
+  // and fill in medium / edition / price. The shop-root URLs below are the
+  // old placeholders — they still work, they just land people on the
+  // storefront instead of the piece they clicked.
+  { name: 'saturn',     title: 'Saturn',     year: '2025', w: 1080, h: 1350, shop: 'https://schuyxyz.etsy.com' },
+  { name: 'shattered',  title: 'Shattered',  year: '2025', w: 1080, h: 1350, shop: 'https://schuyxyz.etsy.com' },
+  { name: 'boogie',     title: 'Boogie',     year: '2025', w: 1080, h: 1350 },
+  { name: 'partner',    title: 'Partner',    year: '2025', w: 1080, h: 1350 },
+  { name: 'viber',      title: 'Viber',      year: '2024', w: 1120, h: 1400 },
+  { name: 'skullmance', title: 'Skullmance', year: '2024', w: 1120, h: 1400, shop: 'https://schuyxyz.etsy.com' },
+  { name: 'return',     title: 'Return',     year: '2025', w: 1120, h: 1400 },
+  { name: 'focus',      title: 'Focus',      year: '2023', w: 1120, h: 1400 },
+  { name: 'fixed',      title: 'Fixed',      year: '2024', w: 1120, h: 1400 },
 ];
+
+/* ── Responsive image helpers ─────────────────────────────
+   Each piece ships as three AVIFs (480 / 800 / native width) plus the
+   original JPEG as the <picture> fallback. AVIF has been baseline across
+   Safari, Chrome and Firefox since 2022, so the JPEG is a true last resort
+   rather than a tier anyone routinely downloads. */
+const jpegSrc  = item => `images/work/${item.name}.jpg`;
+const avifSrc  = (item, w) => `images/work/avif/${item.name}-${w}.avif`;
+const avifSet  = item => [480, 800, item.w]
+  .map(w => `${avifSrc(item, w)} ${w}w`)
+  .join(', ');
+
+// The lead piece is a 2×2 block, the rest are single cells. These track the
+// grid in styles.css (3 cols → 2 cols at 1024 → 1 col at 480).
+const SIZES_FEATURE = '(max-width: 480px) 92vw, (max-width: 1024px) 94vw, (min-width: 1360px) 794px, 63vw';
+const SIZES_TILE    = '(max-width: 480px) 92vw, (max-width: 1024px) 46vw, (min-width: 1360px) 390px, 31vw';
+
+const altText = item =>
+  `${item.title} (${item.year}) — digital artwork by Schuyler Hample (Schuy)`;
 
 function initGallery() {
   const grid = document.querySelector('.gallery-grid');
@@ -258,8 +316,13 @@ function initGallery() {
     el.setAttribute('aria-label', `View ${item.title}, ${item.year}`);
     el.dataset.index = i;
 
+    const isFeature = i === 0;
+
     el.innerHTML = `
-      <img src="${item.src}" alt="${item.title} (${item.year}) — digital artwork by Schuyler Hample (Schuy)" loading="lazy" width="800" height="1000">
+      <picture>
+        <source type="image/avif" srcset="${avifSet(item)}" sizes="${isFeature ? SIZES_FEATURE : SIZES_TILE}">
+        <img src="${jpegSrc(item)}" alt="${altText(item)}" loading="lazy" decoding="async" width="${item.w}" height="${item.h}">
+      </picture>
       <div class="gallery-overlay">
         <div class="gallery-expand" aria-hidden="true">
           <svg viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
@@ -271,7 +334,7 @@ function initGallery() {
 
     // The feature is the largest thing in the grid and the likely LCP element,
     // so it shouldn't wait in the lazy queue behind the rest.
-    if (i === 0) {
+    if (isFeature) {
       const img = el.querySelector('img');
       img.loading = 'eager';
       img.setAttribute('fetchpriority', 'high');
@@ -287,23 +350,176 @@ function initGallery() {
 }
 
 /* ============================================================
+   FORMS — drops signup + commission inquiry
+
+   Both post to Web3forms (https://api.web3forms.com/submit), which needs an
+   access_key hidden input. Web3forms allows cross-origin fetch, so the happy
+   path never leaves the page; the plain form action is still set as a
+   fallback for the case where fetch fails outright.
+
+   Neither form works until its access_key is filled in. Rather than accept
+   submissions into the void, a keyless form disables itself and — for the
+   contact form — leaves the mailto link as the live path.
+
+   NOTE ON THE DROPS FORM: Web3forms emails each signup rather than building
+   a list, so there is no broadcast to send when a drop lands. To actually
+   mail the list later, either export the addresses out of your inbox or
+   point data-endpoint at a real ESP (Buttondown / Kit / Beehiiv) — the
+   submit path below works unchanged against any of them.
+   ============================================================ */
+function initForms() {
+  initDropsForm();
+  initContactForm();
+}
+
+/* Is this form actually wired up? */
+function formAccessKey(form) {
+  return form.querySelector('input[name="access_key"]')?.value.trim() || '';
+}
+
+/* Shared submit path. Returns a promise that resolves true on success. */
+function submitForm(form, endpoint, statusEl, messages) {
+  const data = new FormData(form);
+
+  // Honeypot: a ticked hidden checkbox means a bot. Report success and drop
+  // it, so the bot has nothing to learn from the response.
+  if (data.get('botcheck')) {
+    setStatus(statusEl, messages.success, 'ok');
+    form.reset();
+    return Promise.resolve(true);
+  }
+  data.delete('botcheck');
+
+  setStatus(statusEl, messages.pending, 'pending');
+  form.classList.add('is-submitting');
+
+  return fetch(endpoint, {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' },
+  })
+    .then(res => res.json().catch(() => ({ success: res.ok })))
+    .then(body => {
+      // Web3forms answers 200 with {success:false, message} on a bad key, so
+      // the status code alone isn't enough to call it a win.
+      if (!body.success) throw new Error(body.message || 'Submission rejected');
+      setStatus(statusEl, messages.success, 'ok');
+      form.reset();
+      return true;
+    })
+    .catch(err => {
+      setStatus(statusEl, messages.error, 'error');
+      console.warn('[forms] submission failed:', err.message);
+      return false;
+    })
+    .finally(() => form.classList.remove('is-submitting'));
+}
+
+function setStatus(el, text, state) {
+  if (!el) return;
+  el.textContent = text;
+  el.dataset.state = state || '';
+}
+
+function initDropsForm() {
+  const form = document.getElementById('drops-form');
+  if (!form) return;
+
+  const status   = document.getElementById('drops-status');
+  const input    = document.getElementById('drops-email');
+  const endpoint = form.dataset.endpoint;
+
+  if (!endpoint || !formAccessKey(form)) {
+    form.classList.add('is-unconfigured');
+    input.disabled = true;
+    form.querySelector('button[type="submit"]').disabled = true;
+    setStatus(status, 'Signup opens soon.', 'note');
+    return;
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!input.value.trim() || !input.checkValidity()) {
+      setStatus(status, 'That email doesn’t look right.', 'error');
+      input.focus();
+      return;
+    }
+    submitForm(form, endpoint, status, {
+      pending: 'Adding you…',
+      success: 'You’re on the list.',
+      error:   'That didn’t go through — try again in a moment.',
+    }).then(ok => { if (ok) trackEvent('newsletter_signup', { location: 'drops_band' }); });
+  });
+}
+
+function initContactForm() {
+  const form   = document.getElementById('contact-form');
+  const mailto = document.getElementById('about-mailto');
+  if (!form) return;
+
+  const endpoint = form.dataset.endpoint;
+
+  // Not wired up → leave the form hidden, keep the mailto as the live path.
+  if (!endpoint || !formAccessKey(form)) return;
+
+  // Configured — show the form and demote the mailto to a quieter secondary
+  // link rather than removing it outright.
+  form.hidden = false;
+  if (mailto) mailto.classList.add('is-secondary');
+
+  const status = document.getElementById('contact-status');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      setStatus(status, 'Please fill in your name, email, and a few details.', 'error');
+      form.querySelector(':invalid')?.focus();
+      return;
+    }
+    submitForm(form, endpoint, status, {
+      pending: 'Sending…',
+      success: 'Got it — I’ll be in touch shortly.',
+      error:   'That didn’t send. Email schuyler.hample@gmail.com directly?',
+    }).then(ok => {
+      if (ok) trackEvent('contact_submit', {
+        project_type: form.querySelector('#contact-type')?.value,
+      });
+    });
+  });
+}
+
+/* ============================================================
    LIGHTBOX
    ============================================================ */
 let currentLightboxIndex = 0;
 
 function openLightbox(index) {
   currentLightboxIndex = index;
-  const lb  = document.getElementById('lightbox');
-  const img = document.getElementById('lightbox-img');
-  const cap = document.getElementById('lightbox-caption');
+  const lb   = document.getElementById('lightbox');
+  const img  = document.getElementById('lightbox-img');
+  const avif = document.getElementById('lightbox-avif');
+  const cap  = document.getElementById('lightbox-caption');
   const item = GALLERY_ITEMS[index];
 
-  img.src = item.src;
-  img.alt = `${item.title} (${item.year}) — digital artwork by Schuyler Hample (Schuy)`;
-  const shopLink = item.shop
-    ? `<a href="${item.shop}" class="lightbox-shop-link" target="_blank" rel="noopener noreferrer" data-track="shop">Available as print →</a>`
+  // The viewer shows one piece at a time at up to native width, so it gets
+  // the two larger tiers only — no point offering a 480px candidate here.
+  avif.srcset = `${avifSrc(item, 800)} 800w, ${avifSrc(item, item.w)} ${item.w}w`;
+  avif.sizes  = '(max-width: 900px) 92vw, 900px';
+  img.src = jpegSrc(item);
+  img.alt = altText(item);
+  img.width  = item.w;
+  img.height = item.h;
+
+  // Details line: only render the parts this piece actually has, so a piece
+  // with no metadata reads as a clean title/year rather than empty labels.
+  const details = [item.medium, item.edition, item.price].filter(Boolean);
+  const detailLine = details.length
+    ? `<span class="lightbox-details">${details.join(' &middot; ')}</span>`
     : '';
-  cap.innerHTML = `<strong>${item.title}</strong><span>${item.year}</span>${shopLink}`;
+  const shopLink = item.shop
+    ? `<a href="${item.shop}" class="lightbox-shop-link" target="_blank" rel="noopener noreferrer" data-track="shop" data-piece="${item.name}">Available as print &rarr;</a>`
+    : '';
+  cap.innerHTML = `<strong>${item.title}</strong><span>${item.year}</span>${detailLine}${shopLink}`;
 
   lb.classList.add('open');
   lb.setAttribute('aria-hidden', 'false');
@@ -402,22 +618,24 @@ function initCursorGlow() {
    ANALYTICS — event wiring
    ============================================================ */
 function initAnalyticsEvents() {
-  // Shop CTAs → 'shop_click'
-  document.querySelectorAll('[data-track="shop"]').forEach(el => {
-    el.addEventListener('click', () => trackEvent('shop_click', { link_url: el.href }));
-  });
+  // Delegated from the document rather than bound per element: the lightbox's
+  // "Available as print" link is built when a piece is opened, so a bind-at-
+  // startup pass missed the single most purchase-intent click on the site.
+  const EVENTS = {
+    shop:    el => ['shop_click',    { link_url: el.href, piece: el.dataset.piece || null }],
+    gumroad: el => ['gumroad_click', { link_url: el.href }],
+    social:  el => ['social_click',  { platform: el.dataset.platform || 'unknown', link_url: el.href }],
+    concept: el => ['concept_click', { concept: el.dataset.concept || 'unknown' }],
+    contact: el => ['contact_click', { method: 'mailto', link_url: el.href }],
+  };
 
-  // Gumroad links → 'gumroad_click'
-  document.querySelectorAll('[data-track="gumroad"]').forEach(el => {
-    el.addEventListener('click', () => trackEvent('gumroad_click', { link_url: el.href }));
-  });
-
-  // Social links → 'social_click'
-  document.querySelectorAll('[data-track="social"]').forEach(el => {
-    el.addEventListener('click', () => trackEvent('social_click', {
-      platform: el.dataset.platform || 'unknown',
-      link_url: el.href,
-    }));
+  document.addEventListener('click', e => {
+    const el = e.target.closest('[data-track]');
+    if (!el) return;
+    const build = EVENTS[el.dataset.track];
+    if (!build) return;
+    const [name, params] = build(el);
+    trackEvent(name, params);
   });
 }
 

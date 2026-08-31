@@ -7,7 +7,17 @@
       "Bash(git --version)",
       "Read(//usr/local/bin/**)",
       "Read(//opt/homebrew/bin/**)",
-      "Bash(git config *)"
+      "Bash(git config *)",
+      "Bash(gh repo *)",
+      "Bash(git add *)",
+      "Bash(curl -s https://nightschuy.github.io/schuy.xyz/css/styles.css?cb=__TRACKED_VAR__)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git stash *)",
+      "Bash(git rm *)",
+      "Bash(npm --version)",
+      "Read(//Users/schuylerhample/Claude Code/**)"
     ]
   }
 }

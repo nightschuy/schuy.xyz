@@ -181,13 +181,18 @@ a { color: inherit; text-decoration: none; }
   opacity: 0;
   visibility: hidden;
   pointer-events: none; /* closed drawer must not trap taps over the page */
-  transition: transform 0.3s var(--ease-out), opacity 0.3s, visibility 0.3s;
+  /* visibility is discrete: transitioning it would flip halfway through, so
+     the drawer is still `hidden` when the open handler tries to move focus
+     into it. Delay it to the end when closing, apply it instantly when
+     opening — the fade/slide still animate either way. */
+  transition: transform 0.3s var(--ease-out), opacity 0.3s, visibility 0s 0.3s;
 }
 .nav-drawer.open {
   transform: translateY(0);
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  transition: transform 0.3s var(--ease-out), opacity 0.3s, visibility 0s;
 }
 .nav-drawer ul {
   list-style: none;
@@ -763,6 +768,14 @@ section { position: relative; }
   aspect-ratio: auto;
 }
 
+/* <picture> is inline by default and would not fill the tile, so it has to
+   carry the same box as the <img> it wraps. */
+.gallery-item picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 /* Art is shown at full brightness — never dim the work itself */
 .gallery-item img {
   width: 100%;
@@ -860,9 +873,15 @@ section { position: relative; }
   max-height: 88vh;
 }
 
+.lightbox-img-wrap picture { display: block; }
+
 #lightbox-img {
   max-width: 90vw;
   max-height: 82vh;
+  /* width/height attributes are set per piece to reserve the box before the
+     bitmap lands; `auto` lets the max-* rules above do the actual sizing. */
+  width: auto;
+  height: auto;
   object-fit: contain;
   border-radius: 2px;
   box-shadow: 0 0 80px rgba(107,58,255,0.2);
@@ -1506,6 +1525,15 @@ section { position: relative; }
 }
 .lightbox-shop-link:hover { color: var(--chrome-hi); }
 
+/* Medium / edition / price — the collector-facing line under the title */
+.lightbox-details {
+  display: block;
+  margin: 6px 0 0 !important;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--chrome-lo) !important;
+}
+
 /* Footer: meta row (was inline styles) */
 .footer-meta {
   display: flex;
@@ -1520,3 +1548,283 @@ section { position: relative; }
 }
 .footer-meta-link:hover { color: var(--chrome-hi); }
 
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+/* Visible to screen readers, not to eyes. Used for the form labels the
+   design carries as placeholders, and for the honeypot fields. */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================================
+   DROPS — email capture band
+   ============================================================ */
+#drops {
+  padding: 100px 0;
+}
+
+.drops-card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 48px;
+  align-items: center;
+  padding: 48px 52px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background:
+    radial-gradient(ellipse 70% 120% at 12% 0%, rgba(107,58,255,0.14) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 100% at 92% 100%, rgba(217,70,239,0.10) 0%, transparent 60%),
+    var(--bg-2);
+}
+
+.drops-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--chrome-hi);
+  margin-top: 10px;
+}
+
+.drops-sub {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--chrome-lo);
+  max-width: 46ch;
+}
+
+.drops-field {
+  display: flex;
+  gap: 10px;
+}
+
+.drops-field input {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 16px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--chrome-hi);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.drops-field input::placeholder { color: var(--text-dim); }
+.drops-field input:focus {
+  outline: none;
+  border-color: var(--violet-1);
+  background: rgba(255,255,255,0.06);
+}
+.drops-field input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.drops-submit { flex-shrink: 0; }
+.drops-form.is-submitting { opacity: 0.6; pointer-events: none; }
+
+.drops-status {
+  margin-top: 10px;
+  min-height: 1.2em;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--chrome-lo);
+}
+.drops-status[data-state="ok"]    { color: #4ade80; }
+.drops-status[data-state="error"] { color: var(--magenta); }
+
+/* ============================================================
+   DESIGN — concept sites
+   ============================================================ */
+#design {
+  padding: 120px 0;
+  border-top: 1px solid var(--border);
+}
+
+.design-intro {
+  margin-top: 16px;
+  max-width: 56ch;
+  color: var(--chrome-lo);
+  font-size: 0.95rem;
+}
+
+.design-grid {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.design-card {
+  display: block;
+  padding: 32px 28px 28px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg-2);
+  transition: border-color 0.3s var(--ease-out), transform 0.3s var(--ease-out), background 0.3s;
+}
+.design-card:hover {
+  border-color: rgba(139,92,246,0.5);
+  transform: translateY(-4px);
+  background: #12121f;
+}
+.design-card:focus-visible {
+  outline: 2px solid var(--violet-1);
+  outline-offset: 4px;
+}
+
+.design-mark {
+  display: inline-block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: var(--violet-2);
+}
+
+.design-title {
+  margin-top: 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--chrome-hi);
+}
+
+.design-desc {
+  margin-top: 8px;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.design-for {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   CONTACT FORM
+   ============================================================ */
+.contact-form {
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.contact-form-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--violet-2);
+  margin-bottom: 20px;
+}
+
+.contact-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.contact-field { margin-bottom: 16px; }
+
+.contact-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--chrome-lo);
+}
+
+.contact-field input,
+.contact-field select,
+.contact-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--chrome-hi);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.contact-field textarea { resize: vertical; min-height: 96px; }
+.contact-field input::placeholder,
+.contact-field textarea::placeholder { color: var(--text-dim); }
+.contact-field input:focus,
+.contact-field select:focus,
+.contact-field textarea:focus {
+  outline: none;
+  border-color: var(--violet-1);
+  background: rgba(255,255,255,0.06);
+}
+/* The native dark-on-dark select popup is unreadable in some browsers. */
+.contact-field select option { background: var(--bg-2); color: var(--chrome-hi); }
+
+.contact-submit { margin-top: 8px; }
+.contact-form.is-submitting { opacity: 0.6; pointer-events: none; }
+
+.contact-status {
+  margin-top: 12px;
+  min-height: 1.2em;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--chrome-lo);
+}
+.contact-status[data-state="ok"]    { color: #4ade80; }
+.contact-status[data-state="error"] { color: var(--magenta); }
+
+/* When the form is live, the mailto stops being the primary action. */
+.about-cta.is-secondary {
+  margin-top: 20px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 0.75rem;
+  color: var(--chrome-lo);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.about-cta.is-secondary:hover { color: var(--chrome-hi); }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .design-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  #drops  { padding: 72px 0; }
+  #design { padding: 88px 0; }
+  .drops-card {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 36px 28px;
+  }
+  .design-grid { grid-template-columns: 1fr; }
+  .contact-row { grid-template-columns: 1fr; gap: 0; }
+}
+
+@media (max-width: 480px) {
+  .drops-field { flex-direction: column; }
+  .drops-submit { width: 100%; justify-content: center; }
+}
