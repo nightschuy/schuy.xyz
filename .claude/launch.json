@@ -56,6 +56,54 @@
         "4455"
       ],
       "port": 4455
+    },
+    {
+      "name": "rjhample",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4321",
+        "--directory",
+        "/Users/schuylerhample/Claude Code/rjhample"
+      ],
+      "port": 4321
+    },
+    {
+      "name": "purple-earth",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4448",
+        "--directory",
+        "/Users/schuylerhample/Claude Code/purple-earth/dist"
+      ],
+      "port": 4448
+    },
+    {
+      "name": "rsm-audit-innovation",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4449",
+        "--directory",
+        "/Users/schuylerhample/Claude Code/rsm-audit-innovation"
+      ],
+      "port": 4449
+    },
+    {
+      "name": "rsm-changing-your-auditor",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4450",
+        "--directory",
+        "/Users/schuylerhample/Claude Code/rsm-changing-your-auditor"
+      ],
+      "port": 4450
     }
   ]
 }

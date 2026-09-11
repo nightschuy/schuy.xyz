@@ -4,3 +4,7 @@
 *.orig.glb
 
 .DS_Store
+
+# Build-time deps for the React concept sources in apps/. Only the built
+# output under concepts/ ships.
+node_modules/
