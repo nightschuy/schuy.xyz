@@ -625,8 +625,8 @@ function initAnalyticsEvents() {
     shop:    el => ['shop_click',    { link_url: el.href, piece: el.dataset.piece || null }],
     gumroad: el => ['gumroad_click', { link_url: el.href }],
     social:  el => ['social_click',  { platform: el.dataset.platform || 'unknown', link_url: el.href }],
-    concept: el => ['concept_click', { concept: el.dataset.concept || 'unknown' }],
     contact: el => ['contact_click', { method: 'mailto', link_url: el.href }],
+    studio:  el => ['studio_click',  { link_url: el.href }],
   };
 
   document.addEventListener('click', e => {

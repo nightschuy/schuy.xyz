@@ -104,6 +104,18 @@
         "/Users/schuylerhample/Claude Code/rsm-changing-your-auditor"
       ],
       "port": 4450
+    },
+    {
+      "name": "hampledesignhouse",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4460",
+        "--directory",
+        "/Users/schuylerhample/Claude Code/hampledesignhouse"
+      ],
+      "port": 4460
     }
   ]
 }

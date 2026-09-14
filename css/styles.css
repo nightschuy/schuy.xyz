@@ -1153,6 +1153,15 @@ section { position: relative; }
   font-weight: 600;
 }
 
+.about-bio a {
+  color: var(--chrome-hi);
+  text-decoration: underline;
+  text-decoration-color: var(--violet-1);
+  text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+.about-bio a:hover { color: var(--violet-2); }
+
 .social-links {
   display: flex;
   gap: 16px;
@@ -1645,81 +1654,6 @@ section { position: relative; }
 .drops-status[data-state="error"] { color: var(--magenta); }
 
 /* ============================================================
-   DESIGN — concept sites
-   ============================================================ */
-#design {
-  padding: 120px 0;
-  border-top: 1px solid var(--border);
-}
-
-.design-intro {
-  margin-top: 16px;
-  max-width: 56ch;
-  color: var(--chrome-lo);
-  font-size: 0.95rem;
-}
-
-.design-grid {
-  margin-top: 48px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.design-card {
-  display: block;
-  padding: 32px 28px 28px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: var(--bg-2);
-  transition: border-color 0.3s var(--ease-out), transform 0.3s var(--ease-out), background 0.3s;
-}
-.design-card:hover {
-  border-color: rgba(139,92,246,0.5);
-  transform: translateY(-4px);
-  background: #12121f;
-}
-.design-card:focus-visible {
-  outline: 2px solid var(--violet-1);
-  outline-offset: 4px;
-}
-
-.design-mark {
-  display: inline-block;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  color: var(--violet-2);
-}
-
-.design-title {
-  margin-top: 14px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--chrome-hi);
-}
-
-.design-desc {
-  margin-top: 8px;
-  font-size: 0.88rem;
-  color: var(--text);
-}
-
-.design-for {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
-
-/* ============================================================
    CONTACT FORM
    ============================================================ */
 .contact-form {
@@ -1808,19 +1742,13 @@ section { position: relative; }
 .about-cta.is-secondary:hover { color: var(--chrome-hi); }
 
 /* ── Responsive ──────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .design-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
 @media (max-width: 768px) {
   #drops  { padding: 72px 0; }
-  #design { padding: 88px 0; }
   .drops-card {
     grid-template-columns: 1fr;
     gap: 28px;
     padding: 36px 28px;
   }
-  .design-grid { grid-template-columns: 1fr; }
   .contact-row { grid-template-columns: 1fr; gap: 0; }
 }
 
