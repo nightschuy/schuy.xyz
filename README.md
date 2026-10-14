@@ -22,7 +22,7 @@ Open `index.html` in a browser — no build step, no server required.
 │   ├── hero.mp4       ← hero video loop (add this file)
 │   ├── hero-poster.jpg← first frame still for the video (add this)
 │   ├── og-image.png   ← Open Graph / Twitter card image (add this)
-│   └── favicon.svg    ← favicon (add this)
+│   ├── favicon.svg    ← favicon (+ favicon-32.png, apple-touch-icon.png)
 ├── .nojekyll          ← required for GitHub Pages
 └── README.md
 ```

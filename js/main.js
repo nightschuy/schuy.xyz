@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollReveal();
   initCursorGlow();
   initForms();
+  initSonarGrid();
   initAnalyticsEvents();
   updateFooterYear();
 });
@@ -294,10 +295,9 @@ const avifSet  = item => [480, 800, item.w]
   .map(w => `${avifSrc(item, w)} ${w}w`)
   .join(', ');
 
-// The lead piece is a 2×2 block, the rest are single cells. These track the
-// grid in styles.css (3 cols → 2 cols at 1024 → 1 col at 480).
-const SIZES_FEATURE = '(max-width: 480px) 92vw, (max-width: 1024px) 94vw, (min-width: 1360px) 794px, 63vw';
-const SIZES_TILE    = '(max-width: 480px) 92vw, (max-width: 1024px) 46vw, (min-width: 1360px) 390px, 31vw';
+// Even grid of 4:5 tiles. These track the columns in styles.css
+// (3 cols → 2 cols at 1024; content box tops out at 1200px).
+const SIZES_TILE = '(max-width: 1024px) 46vw, (min-width: 1280px) 384px, 31vw';
 
 const altText = item =>
   `${item.title} (${item.year}) — digital artwork by Schuyler Hample (Schuy)`;
@@ -307,43 +307,24 @@ function initGallery() {
   if (!grid) return;
 
   GALLERY_ITEMS.forEach((item, i) => {
-    const el = document.createElement('div');
-    // The lead piece runs as a 2×2 feature block (see .is-feature in the CSS).
-    el.className = 'gallery-item reveal reveal-delay-' + ((i % 4) + 1)
-                 + (i === 0 ? ' is-feature' : '');
-    el.setAttribute('tabindex', '0');
-    el.setAttribute('role', 'button');
-    el.setAttribute('aria-label', `View ${item.title}, ${item.year}`);
-    el.dataset.index = i;
-
-    const isFeature = i === 0;
+    const el = document.createElement('figure');
+    el.className = 'gallery-item reveal reveal-delay-' + ((i % 3) + 1);
+    el.setAttribute('role', 'listitem');
 
     el.innerHTML = `
-      <picture>
-        <source type="image/avif" srcset="${avifSet(item)}" sizes="${isFeature ? SIZES_FEATURE : SIZES_TILE}">
-        <img src="${jpegSrc(item)}" alt="${altText(item)}" loading="lazy" decoding="async" width="${item.w}" height="${item.h}">
-      </picture>
-      <div class="gallery-overlay">
-        <div class="gallery-expand" aria-hidden="true">
-          <svg viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-        </div>
-        <p class="gallery-title">${item.title}</p>
-        <p class="gallery-year">${item.year}</p>
-      </div>
+      <button type="button" class="gallery-frame" aria-label="View ${item.title}, ${item.year}">
+        <picture>
+          <source type="image/avif" srcset="${avifSet(item)}" sizes="${SIZES_TILE}">
+          <img src="${jpegSrc(item)}" alt="${altText(item)}" loading="lazy" decoding="async" width="${item.w}" height="${item.h}">
+        </picture>
+      </button>
     `;
 
-    // The feature is the largest thing in the grid and the likely LCP element,
-    // so it shouldn't wait in the lazy queue behind the rest.
-    if (isFeature) {
-      const img = el.querySelector('img');
-      img.loading = 'eager';
-      img.setAttribute('fetchpriority', 'high');
-    }
+    // The first row is above the fold on most screens — don't lazy-queue it.
+    if (i < 3) el.querySelector('img').loading = 'eager';
+    if (i === 0) el.querySelector('img').setAttribute('fetchpriority', 'high');
 
-    el.addEventListener('click', () => openLightbox(i));
-    el.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
-    });
+    el.querySelector('.gallery-frame').addEventListener('click', () => openLightbox(i));
 
     grid.appendChild(el);
   });
@@ -534,6 +515,8 @@ function closeLightbox() {
   lb.classList.remove('open');
   lb.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
+  // Hand focus back to the piece the viewer ended on, not the page top.
+  document.querySelectorAll('.gallery-frame')[currentLightboxIndex]?.focus({ preventScroll: true });
 }
 
 function lightboxNav(dir) {
@@ -646,3 +629,105 @@ function updateFooterYear() {
   const el = document.getElementById('footer-year');
   if (el) el.textContent = new Date().getFullYear();
 }
+
+/* ============================================================
+   SONAR GRID — dot field behind the drops signup
+   Rings expand from wherever the visitor clicks inside the card; an ambient
+   ping keeps it alive, and one ring is already mid-flight at first paint so
+   the effect reads before anyone interacts. Paused while off-screen;
+   reduced-motion visitors get the still dot field only.
+   ============================================================ */
+function initSonarGrid() {
+  const canvas = document.querySelector('.sonar-grid');
+  if (!canvas) return;
+  const card = canvas.parentElement;
+  const ctx  = canvas.getContext('2d');
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const SPACING   = 22;    // px between dots
+  const SPEED     = 240;   // ring radius growth, px/s
+  const RING_W    = 70;    // how thick the bright band of a ring is
+  const PING_EVERY = 2.6;  // seconds between ambient pings
+  // Cerulean → violet → magenta across the field, matching the brand rule
+  const STOPS = [[61,141,223], [107,58,255], [217,70,239]];
+
+  let w = 0, h = 0, dpr = 1, dots = [];
+  let rings = [], running = false, last = 0, sinceAmbient = 0;
+
+  const mix = t => {
+    const seg = Math.min(STOPS.length - 2, Math.floor(t * (STOPS.length - 1)));
+    const f = t * (STOPS.length - 1) - seg;
+    return STOPS[seg].map((c, k) => Math.round(c + (STOPS[seg + 1][k] - c) * f));
+  };
+
+  function layout() {
+    const r = card.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = r.width; h = r.height;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    dots = [];
+    for (let y = SPACING / 2; y < h; y += SPACING)
+      for (let x = SPACING / 2; x < w; x += SPACING)
+        dots.push({ x, y, rgb: mix(x / w) });
+  }
+
+  function ping(x, y, r = 0) { rings.push({ x, y, r, max: Math.hypot(w, h) }); }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    for (const d of dots) {
+      let glow = 0;
+      for (const ring of rings) {
+        const dist = Math.abs(Math.hypot(d.x - ring.x, d.y - ring.y) - ring.r);
+        if (dist < RING_W) {
+          const fade = 1 - ring.r / ring.max;
+          glow = Math.max(glow, (1 - dist / RING_W) * fade);
+        }
+      }
+      const [r, g, b] = d.rgb;
+      ctx.fillStyle = `rgba(${r},${g},${b},${0.1 + glow * 0.6})`;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, 1 + glow * 1.3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function frame(t) {
+    if (!running) return;
+    const dt = Math.min(0.05, (t - (last || t)) / 1000);
+    last = t;
+    sinceAmbient += dt;
+    if (sinceAmbient > PING_EVERY) {
+      sinceAmbient = 0;
+      ping(w * (0.1 + Math.random() * 0.4), h * (0.2 + Math.random() * 0.6));
+    }
+    rings.forEach(r => { r.r += SPEED * dt; });
+    rings = rings.filter(r => r.r < r.max);
+    draw();
+    requestAnimationFrame(frame);
+  }
+
+  layout();
+  if (still) { draw(); return; }
+
+  ping(w * 0.22, h * 0.45, 140);   // already mid-flight at first paint
+  draw();
+
+  card.addEventListener('pointerdown', e => {
+    const r = card.getBoundingClientRect();
+    ping(e.clientX - r.left, e.clientY - r.top);
+  });
+
+  new IntersectionObserver(([entry]) => {
+    running = entry.isIntersecting;
+    if (running) { last = 0; requestAnimationFrame(frame); }
+  }).observe(card);
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { layout(); draw(); }, 150);
+  });
+}
+

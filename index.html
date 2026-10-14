@@ -95,7 +95,9 @@
   </script>
 
   <!-- ── Favicon ──────────────────────────────────────────── -->
-  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png?v=2">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=2">
   <meta name="theme-color" content="#0a0a0f">
 
   <!-- ── Fonts (preconnect first, loaded via link — not CSS @import —
@@ -105,7 +107,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;700;900&display=swap">
 
   <!-- ── Styles ───────────────────────────────────────────── -->
-  <link rel="stylesheet" href="css/styles.css?v=20260830-1">
+  <link rel="stylesheet" href="css/styles.css?v=20261014-4">
 
   <!-- ── Google Analytics 4 ──────────────────────────────── -->
   <!-- GA4 is consent-gated: gtag is not loaded at all until the visitor
@@ -216,8 +218,10 @@
 <section id="work" aria-labelledby="work-heading">
   <div class="section-inner">
     <div class="work-header">
-      <p class="section-label reveal">Selected Work</p>
-      <h2 id="work-heading" class="section-heading reveal reveal-delay-1">The Catalogue</h2>
+      <div>
+        <p class="section-label reveal">Selected Work</p>
+        <h2 id="work-heading" class="section-heading reveal reveal-delay-1">The Catalogue</h2>
+      </div>
     </div>
 
     <!--
@@ -238,17 +242,49 @@
       <p class="shop-band-eyebrow">Limited Drops</p>
       <h2 class="shop-band-heading">Own a Piece of the Work</h2>
       <p class="shop-band-sub">Museum-quality fine art prints and limited-run apparel. Each piece is a window into the work.</p>
+      <a
+        href="https://schuyxyz.etsy.com"
+        class="btn btn-primary shop-band-cta"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-track="shop"
+        aria-label="Shop prints and apparel on Etsy"
+      >
+        Shop Prints
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
+
+    <!-- Fanned print stack — three pieces that are actually for sale, splayed
+         like prints on a table. Decorative duplicate of the CTA, so it's
+         hidden from assistive tech and skipped by keyboard. -->
     <a
       href="https://schuyxyz.etsy.com"
-      class="btn btn-primary reveal reveal-delay-2"
+      class="print-fan reveal reveal-delay-2"
       target="_blank"
       rel="noopener noreferrer"
       data-track="shop"
-      aria-label="Shop prints and apparel on Etsy"
+      aria-hidden="true"
+      tabindex="-1"
     >
-      Shop Prints
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <span class="print-fan-card" style="--i:-1">
+        <picture>
+          <source type="image/avif" srcset="images/work/avif/skullmance-480.avif">
+          <img src="images/work/skullmance.jpg" alt="" loading="lazy" decoding="async" width="1120" height="1400">
+        </picture>
+      </span>
+      <span class="print-fan-card" style="--i:1">
+        <picture>
+          <source type="image/avif" srcset="images/work/avif/shattered-480.avif">
+          <img src="images/work/shattered.jpg" alt="" loading="lazy" decoding="async" width="1080" height="1350">
+        </picture>
+      </span>
+      <span class="print-fan-card" style="--i:0">
+        <picture>
+          <source type="image/avif" srcset="images/work/avif/saturn-480.avif">
+          <img src="images/work/saturn.jpg" alt="" loading="lazy" decoding="async" width="1080" height="1350">
+        </picture>
+      </span>
     </a>
   </div>
 </section>
@@ -261,6 +297,7 @@
 <section id="drops" aria-labelledby="drops-heading">
   <div class="section-inner">
     <div class="drops-card reveal">
+      <canvas class="sonar-grid" aria-hidden="true"></canvas>
       <div class="drops-copy">
         <p class="section-label">The List</p>
         <h2 id="drops-heading" class="drops-heading">Know About the Next Drop First</h2>
@@ -322,7 +359,7 @@
     <div class="goods-grid">
 
       <!-- Card 1: Design Assets -->
-      <div class="goods-card reveal reveal-delay-2">
+      <div class="goods-card goods-card--cerulean reveal reveal-delay-2">
         <div class="goods-icon" aria-hidden="true">
           <!-- Layers icon -->
           <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -605,7 +642,7 @@
 
 <!-- ── Scripts ───────────────────────────────────────────── -->
 <script src="js/cookie-consent.js"></script>
-<script src="js/main.js?v=20260830-1"></script>
+<script src="js/main.js?v=20261014-4"></script>
 
 <!-- ── three.js r160 (self-hosted ESM via import-map — no build step) ──
      Vendored under js/vendor/three/ rather than pulled from unpkg: a CDN
@@ -620,7 +657,7 @@
   }
 }
 </script>
-<script type="module" src="js/hero3d.js?v=20260830-1"></script>
+<script type="module" src="js/hero3d.js?v=20261014-1"></script>
 
 </body>
 </html>

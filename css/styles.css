@@ -5,6 +5,9 @@
      Royal blue:     #1a3acc / #2b4bff
      Violet-purple:  #6a3aff / #8b5cf6
      Neon magenta:   #d946ef
+     Cerulean:       #3d8ddf  ← sky blue pulled from Partner / Saturn
+     Ember:          #e2443a  ← warm spark pulled from Return / Focus
+                                (accent only — keep it to small doses)
      Chrome silver:  #e8e8f0 → #8a8a9a
    ============================================================ */
 
@@ -27,6 +30,10 @@
   --violet-1:   #6a3aff;
   --violet-2:   #8b5cf6;
   --magenta:    #d946ef;
+  --cerulean:   #3d8ddf;
+  --ember:      #e2443a;
+  /* Full-spectrum rule: cool sky through to the warm ember spark */
+  --spectrum:   linear-gradient(90deg, var(--cerulean), var(--blue-2), var(--violet-1), var(--magenta), var(--ember));
   --chrome-hi:  #e8e8f0;
   --chrome-lo:  #8a8a9a;
   --text:       #c8c8d8;
@@ -256,6 +263,7 @@ a { color: inherit; text-decoration: none; }
   background:
     radial-gradient(ellipse 80% 60% at 50% 30%, rgba(26,58,204,0.18) 0%, transparent 70%),
     radial-gradient(ellipse 60% 40% at 70% 60%, rgba(107,58,255,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 45% at 12% 85%, rgba(61,141,223,0.10) 0%, transparent 65%),
     linear-gradient(180deg, rgba(10,10,15,0.2) 0%, rgba(10,10,15,0.5) 80%, rgba(10,10,15,0.95) 100%);
   z-index: 1;
 }
@@ -679,7 +687,7 @@ section { position: relative; }
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--violet-1) 30%, var(--magenta) 70%, transparent);
+  background: linear-gradient(90deg, transparent, var(--violet-1) 25%, var(--magenta) 60%, var(--ember) 85%, transparent);
   opacity: 0.5;
 }
 #shop::before { top: 0; }
@@ -693,7 +701,9 @@ section { position: relative; }
   width: 620px;
   height: 620px;
   transform: translateY(-50%);
-  background: radial-gradient(circle, rgba(217,70,239,0.16) 0%, transparent 65%);
+  background:
+    radial-gradient(circle at 60% 70%, rgba(226,68,58,0.08) 0%, transparent 45%),
+    radial-gradient(circle, rgba(217,70,239,0.16) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -714,7 +724,7 @@ section { position: relative; }
   font-size: 0.7rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--magenta);
+  color: var(--ember);
   margin-bottom: 12px;
 }
 .shop-band-heading {
@@ -739,111 +749,65 @@ section { position: relative; }
 }
 
 .work-header {
-  margin-bottom: 64px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 56px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
 }
+.work-header .section-heading { margin-bottom: 0; }
 
-/* Editorial grid. Every piece is shot 4:5, so a real grid (rather than the
-   old CSS-columns masonry) keeps rows aligned AND lets the lead piece span
-   a 2×2 block — the catalogue gets a focal point instead of nine equal tiles. */
+/* Even grid. Every piece is shot 4:5, so each tile holds that ratio and
+   nothing is ever cropped. No captions — the work speaks for itself; titles
+   live in the lightbox and the alt text. */
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 24px;
 }
 
-.gallery-item {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
+.gallery-item { margin: 0; }
+
+.gallery-frame {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
   border-radius: 2px;
+  overflow: hidden;
+  cursor: zoom-in;
   background: var(--bg-2);
   aspect-ratio: 4 / 5;
 }
 
-/* Lead piece: 2 columns × 2 rows. aspect-ratio is released so the span
-   itself dictates the height (two rows plus the gap). */
-.gallery-item.is-feature {
-  grid-column: span 2;
-  grid-row: span 2;
-  aspect-ratio: auto;
-}
-
 /* <picture> is inline by default and would not fill the tile, so it has to
    carry the same box as the <img> it wraps. */
-.gallery-item picture {
+.gallery-frame picture {
   display: block;
   width: 100%;
   height: 100%;
 }
 
 /* Art is shown at full brightness — never dim the work itself */
-.gallery-item img {
+.gallery-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.6s var(--ease-out);
+  transition: transform 0.9s var(--ease-out);
 }
+.gallery-frame:hover img { transform: scale(1.025); }
 
-.gallery-item:hover img {
-  transform: scale(1.04);
-}
-
-.gallery-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(0deg, rgba(10,10,15,0.88) 0%, transparent 50%);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 20px;
-  opacity: 0;
-  transition: opacity 0.35s var(--ease-out);
-}
-.gallery-item:hover .gallery-overlay { opacity: 1; }
-
-.gallery-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--chrome-hi);
-  letter-spacing: 0.05em;
-  transform: translateY(8px);
-  transition: transform 0.35s var(--ease-out);
-}
-.gallery-item:hover .gallery-title { transform: translateY(0); }
-
-.gallery-year {
-  font-size: 0.72rem;
-  color: var(--violet-2);
-  letter-spacing: 0.15em;
-  transform: translateY(8px);
-  transition: transform 0.35s var(--ease-out) 0.04s;
-}
-.gallery-item:hover .gallery-year { transform: translateY(0); }
-
-/* Expand icon */
-.gallery-expand {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 32px;
-  height: 32px;
-  border: 1px solid rgba(232,232,240,0.3);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s, background 0.3s;
-}
-.gallery-item:hover .gallery-expand { opacity: 1; }
-.gallery-expand svg { width: 14px; height: 14px; stroke: var(--chrome-hi); }
-
-/* Focus for keyboard */
-.gallery-item:focus-visible {
+.gallery-frame:focus-visible {
   outline: 2px solid var(--violet-1);
-  outline-offset: 2px;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-frame img { transition: none; }
+  .gallery-frame:hover img { transform: none; }
 }
 
 /* ============================================================
@@ -1044,7 +1008,7 @@ section { position: relative; }
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--blue-2), var(--violet-1), var(--magenta));
+  background: var(--spectrum);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.5s var(--ease-out);
@@ -1106,6 +1070,17 @@ section { position: relative; }
 .goods-link:hover { color: var(--chrome-hi); gap: 12px; }
 .goods-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
 
+/* Design-assets card runs in cerulean so the two offers read as a pair,
+   not twins. The VJ card keeps the violet house colour. */
+.goods-card--cerulean .goods-icon     { background: linear-gradient(135deg, var(--cerulean), var(--blue-1)); }
+.goods-card--cerulean .goods-audience,
+.goods-card--cerulean .goods-link     { color: var(--cerulean); }
+.goods-card--cerulean::before         { background: radial-gradient(ellipse at top left, rgba(61,141,223,0.10) 0%, transparent 60%); }
+.goods-card--cerulean:hover {
+  border-color: rgba(61,141,223,0.4);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.45), 0 0 40px rgba(61,141,223,0.12);
+}
+
 /* ============================================================
    ABOUT
    ============================================================ */
@@ -1138,7 +1113,21 @@ section { position: relative; }
   font-size: 0.75rem;
   letter-spacing: 0.1em;
   color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
+.location-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pill-dot, var(--violet-2));
+  box-shadow: 0 0 8px var(--pill-dot, var(--violet-2));
+}
+.location-pill:nth-child(1) { --pill-dot: var(--cerulean); }
+.location-pill:nth-child(2) { --pill-dot: var(--violet-2); }
+.location-pill:nth-child(3) { --pill-dot: var(--ember); }
 
 .about-bio {
   font-size: 1.05rem;
@@ -1429,8 +1418,7 @@ section { position: relative; }
    ============================================================ */
 @media (max-width: 1024px) {
   /* Two columns: the lead piece spans the full width as a wide banner. */
-  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-  .gallery-item.is-feature { grid-column: span 2; grid-row: span 1; aspect-ratio: 16 / 10; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   .about-grid { grid-template-columns: 1fr; gap: 48px; }
 }
 
@@ -1448,6 +1436,7 @@ section { position: relative; }
   .shop-mid-inner { padding: 0 24px; }
 
   #work { padding: 80px 0; }
+  .work-header { margin-bottom: 36px; padding-bottom: 20px; }
   #goods { padding: 80px 0; }
   #about { padding: 80px 0; }
 
@@ -1469,26 +1458,14 @@ section { position: relative; }
 }
 
 @media (max-width: 480px) {
-  /* Single column — the feature is just the first piece, full width. */
-  .gallery-grid { grid-template-columns: 1fr; gap: 12px; }
-  .gallery-item.is-feature { grid-column: span 1; aspect-ratio: 4 / 5; }
+  /* Phones keep two columns — a tight contact sheet beats nine full-screen scrolls. */
+  .gallery-grid { gap: 12px; }
   .footer-top { gap: 24px; }
 }
 
 /* ============================================================
    ADDITIONS
    ============================================================ */
-
-/* Touch devices: hover overlays never fire, so keep captions visible */
-@media (hover: none) {
-  .gallery-overlay {
-    opacity: 1;
-    background: linear-gradient(0deg, rgba(10,10,15,0.78) 0%, transparent 38%);
-  }
-  .gallery-title,
-  .gallery-year { transform: none; }
-  .gallery-expand { display: none; }
-}
 
 /* Scroll progress — thin brand-gradient rule pinned above the nav.
    Width is driven by --scroll-progress, set from main.js on scroll. */
@@ -1500,7 +1477,7 @@ section { position: relative; }
   width: 100%;
   transform: scaleX(var(--scroll-progress, 0));
   transform-origin: left;
-  background: linear-gradient(90deg, var(--blue-2), var(--violet-1), var(--magenta));
+  background: var(--spectrum);
   z-index: 1000;
   pointer-events: none;
 }
@@ -1593,7 +1570,8 @@ section { position: relative; }
   border: 1px solid var(--border);
   border-radius: 3px;
   background:
-    radial-gradient(ellipse 70% 120% at 12% 0%, rgba(107,58,255,0.14) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 120% at 12% 0%, rgba(61,141,223,0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 110% at 50% 0%, rgba(107,58,255,0.08) 0%, transparent 65%),
     radial-gradient(ellipse 50% 100% at 92% 100%, rgba(217,70,239,0.10) 0%, transparent 60%),
     var(--bg-2);
 }
@@ -1651,7 +1629,7 @@ section { position: relative; }
   color: var(--chrome-lo);
 }
 .drops-status[data-state="ok"]    { color: #4ade80; }
-.drops-status[data-state="error"] { color: var(--magenta); }
+.drops-status[data-state="error"] { color: var(--ember); }
 
 /* ============================================================
    CONTACT FORM
@@ -1726,7 +1704,7 @@ section { position: relative; }
   color: var(--chrome-lo);
 }
 .contact-status[data-state="ok"]    { color: #4ade80; }
-.contact-status[data-state="error"] { color: var(--magenta); }
+.contact-status[data-state="error"] { color: var(--ember); }
 
 /* When the form is live, the mailto stops being the primary action. */
 .about-cta.is-secondary {
@@ -1755,4 +1733,93 @@ section { position: relative; }
 @media (max-width: 480px) {
   .drops-field { flex-direction: column; }
   .drops-submit { width: 100%; justify-content: center; }
+}
+
+/* ============================================================
+   PRINT FAN — shop band (after 21st.dev "Centered Hero with Image Fan")
+   Three for-sale pieces splayed like prints on a table. --i is each card's
+   seat in the fan: -1 left, 0 centre (on top), 1 right.
+   ============================================================ */
+.shop-band-cta { margin-top: 28px; }
+
+.print-fan {
+  --card-w: 200px;
+  position: relative;
+  flex-shrink: 0;
+  width: calc(var(--card-w) * 2);
+  height: calc(var(--card-w) * 1.25 + 40px);
+  display: block;
+  cursor: pointer;
+}
+
+.print-fan-card {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  width: var(--card-w);
+  aspect-ratio: 4 / 5;
+  margin-left: calc(var(--card-w) / -2);
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--bg-2);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 24px 50px rgba(0,0,0,0.55);
+  transform-origin: 50% 110%;
+  transform:
+    translateX(calc(var(--i) * 34%))
+    rotate(calc(var(--i) * 9deg));
+  transition: transform 0.7s var(--ease-out), box-shadow 0.7s var(--ease-out);
+}
+.print-fan-card picture,
+.print-fan-card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* Centre card carries the brand glow so the stack has a focal point */
+.print-fan-card[style*="--i:0"] {
+  box-shadow: 0 24px 50px rgba(0,0,0,0.55), 0 0 60px rgba(107,58,255,0.25);
+}
+
+/* Hover: the fan opens and the centre print lifts toward the viewer */
+.print-fan:hover .print-fan-card {
+  transform:
+    translateX(calc(var(--i) * 62%))
+    translateY(calc((1 - var(--i) * var(--i)) * -14px))
+    rotate(calc(var(--i) * 15deg));
+}
+.print-fan:hover .print-fan-card[style*="--i:0"] {
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 80px rgba(217,70,239,0.3);
+}
+
+@media (max-width: 1024px) {
+  .print-fan { --card-w: 160px; }
+}
+@media (max-width: 768px) {
+  .print-fan { --card-w: 140px; align-self: center; margin-top: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .print-fan-card { transition: none; }
+}
+
+/* ============================================================
+   SONAR GRID — drops card (after 21st.dev "Sonar Grid")
+   Canvas dot field behind the signup: rings ripple out where you click or
+   tap, plus an ambient ping every few seconds. Drawn in main.js.
+   ============================================================ */
+.sonar-grid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  /* Fade the field out toward the form so inputs stay calm and legible */
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 55%);
+          mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 55%);
+}
+.drops-card > :not(.sonar-grid) { position: relative; z-index: 1; }
+
+@media (max-width: 768px) {
+  .sonar-grid {
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 40%, transparent 80%);
+            mask-image: linear-gradient(180deg, #000 0%, #000 40%, transparent 80%);
+  }
 }

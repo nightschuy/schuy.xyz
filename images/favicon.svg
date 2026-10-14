@@ -1,22 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Schuy">
   <defs>
-    <linearGradient id="s-grad" x1="18" y1="14" x2="46" y2="50" gradientUnits="userSpaceOnUse">
-      <stop offset="0"    stop-color="#2b4bff"/>
-      <stop offset="0.52" stop-color="#8b5cf6"/>
-      <stop offset="1"    stop-color="#d946ef"/>
-    </linearGradient>
-    <linearGradient id="s-edge" x1="12" y1="12" x2="52" y2="52" gradientUnits="userSpaceOnUse">
-      <stop offset="0"   stop-color="#2b4bff" stop-opacity="0.55"/>
-      <stop offset="1"   stop-color="#d946ef" stop-opacity="0.55"/>
+    <!-- Chrome-to-violet orb, lit from the upper left like the work -->
+    <radialGradient id="orb" cx="0.36" cy="0.32" r="0.75">
+      <stop offset="0"    stop-color="#f4f2ff"/>
+      <stop offset="0.22" stop-color="#b9a2ff"/>
+      <stop offset="0.55" stop-color="#6a3aff"/>
+      <stop offset="1"    stop-color="#1a1a6e"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="4" y1="0" x2="60" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0"   stop-color="#2b4bff"/>
+      <stop offset="0.5" stop-color="#8b5cf6"/>
+      <stop offset="1"   stop-color="#d946ef"/>
     </linearGradient>
   </defs>
 
-  <!-- Near-black tile with a brand-gradient edge -->
-  <rect x="1.5" y="1.5" width="61" height="61" rx="14" fill="#0a0a0f"/>
-  <rect x="1.5" y="1.5" width="61" height="61" rx="14" fill="none" stroke="url(#s-edge)" stroke-width="2"/>
+  <!-- Near-black tile -->
+  <rect width="64" height="64" rx="14" fill="#0a0a0f"/>
 
-  <!-- S monogram, drawn as a path so it never depends on a font -->
-  <path d="M42 22 C42 15.5, 22 15.5, 22 25 C22 33, 42 31, 42 39 C42 48.5, 22 48.5, 22 42"
-        fill="none" stroke="url(#s-grad)" stroke-width="7"
-        stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="rotate(-22 32 32)">
+    <!-- Back half of the ring, dimmed so it reads as behind the planet -->
+    <path d="M4 32 A28 9 0 0 1 60 32" fill="none" stroke="url(#ring)" stroke-width="4.5" stroke-linecap="round" opacity="0.45"/>
+    <!-- Planet -->
+    <circle cx="32" cy="32" r="16" fill="url(#orb)"/>
+    <!-- Front half of the ring -->
+    <path d="M4 32 A28 9 0 0 0 60 32" fill="none" stroke="url(#ring)" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
 </svg>
