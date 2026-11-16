@@ -121,7 +121,8 @@ function initHeroCanvas() {
   /* Particle pool */
   function createParticles() {
     particles = [];
-    const count = Math.min(Math.floor(W * 0.06), 100);
+    // Phones already carry the 3D motes on top of this layer; keep it light.
+    const count = Math.min(Math.floor(W * 0.06), W < 860 ? 30 : 100);
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * W,
@@ -203,11 +204,16 @@ function initHeroCanvas() {
   createParticles();
   tick();
 
-  // Pause when hidden (perf)
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(animId);
-    else tick();
-  });
+  // Only animate while the hero is on screen and the tab is visible (perf).
+  let onScreen = true, running = true;
+  function sync() {
+    const run = onScreen && !document.hidden;
+    if (run === running) return;
+    running = run;
+    if (run) tick(); else cancelAnimationFrame(animId);
+  }
+  document.addEventListener('visibilitychange', sync);
+  new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; sync(); }).observe(canvas);
 }
 
 /* ============================================================
@@ -450,6 +456,7 @@ function initAnalyticsEvents() {
     social:  el => ['social_click',  { platform: el.dataset.platform || 'unknown', link_url: el.href }],
     contact: el => ['contact_click', { method: 'mailto', link_url: el.href }],
     studio:  el => ['studio_click',  { link_url: el.href }],
+    packs_teaser: el => ['packs_teaser_click', { link_url: el.href }],
   };
 
   document.addEventListener('click', e => {

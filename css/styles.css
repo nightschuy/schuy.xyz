@@ -423,7 +423,8 @@ a { color: inherit; text-decoration: none; }
     height: 100%;
   }
 
-  /* Copy overlay sits above the 3D, spans the full hero */
+  /* Copy sits at the bottom of the screen so the face above stays clear;
+     the figure's head is framed in the upper half (see resize() in hero3d.js). */
   .hero-copy {
     position: absolute;
     top: 0;
@@ -435,41 +436,103 @@ a { color: inherit; text-decoration: none; }
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    padding: calc(var(--nav-h) + 20px) 24px 0;
+    justify-content: flex-end;
+    padding: 0 20px calc(28px + env(safe-area-inset-bottom));
     pointer-events: none;
     text-align: center;
   }
+  .hero-copy > * { pointer-events: auto; }
 
-  /* Sub text hidden — wordmark + tagline only at the top */
   .hero-sub { display: none; }
 
-  /* CTAs float at chest level */
-  .hero-ctas {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 26%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    padding: 0 32px;
-    pointer-events: all;
-  }
-
-  .hero-ctas .btn {
-    width: 100%;
-    max-width: 280px;
-    justify-content: center;
-  }
-
-  /* Wordmark — restore default size (split layout shrank it) */
   .hero-split .hero-wordmark {
-    font-size: clamp(4rem, 20vw, 6rem);
+    font-size: clamp(3.4rem, 17vw, 5.5rem);
+    margin-bottom: 10px;
+  }
+  .hero-tagline { margin-bottom: 22px; font-size: 0.78rem; }
+
+  .hero-ctas {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 420px;
+  }
+  .hero-ctas .btn {
+    flex: 1;
+    justify-content: center;
+    padding: 14px 12px;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
   }
 
-  .hero-scrim { display: none; }
+  /* Bottom-up scrim instead of the desktop side scrim: keeps the copy
+     legible over the chest while the head above stays untouched. */
+  .hero-scrim {
+    display: block;
+    z-index: 5;
+    background: linear-gradient(0deg,
+      rgba(10,10,15,0.92) 0%,
+      rgba(10,10,15,0.7) 26%,
+      rgba(10,10,15,0) 52%);
+  }
+
+  /* The copy is at the bottom now — the scroll cue would collide with it */
+  #hero .scroll-indicator { display: none; }
+  .hide-sm { display: none; }
+  /* Below the copy (z 10): the copy now lives at the bottom, and at z 11 the
+     fade was dimming the buttons. */
+  .hero-fade { height: 12%; z-index: 4; }
+}
+
+/* ── Visual packs teaser badge ────────────────────────── */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+  padding: 7px 14px 7px 10px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  background:
+    linear-gradient(var(--bg-2), var(--bg-2)) padding-box,
+    var(--spectrum) border-box;
+  border: 1px solid transparent;
+  box-shadow: 0 0 28px rgba(107,58,255,0.22);
+  transition: box-shadow 0.3s, transform 0.3s var(--ease-out);
+}
+.hero-badge:hover { box-shadow: 0 0 36px rgba(217,70,239,0.35); transform: translateY(-1px); }
+.hero-badge:focus-visible { outline: 2px solid var(--violet-1); outline-offset: 3px; }
+.hero-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--magenta);
+  box-shadow: 0 0 0 0 rgba(217,70,239,0.6);
+  animation: badgePulse 2s infinite;
+}
+.hero-badge-new {
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  color: var(--magenta);
+}
+.hero-badge-cta { color: var(--chrome-hi); font-weight: 600; white-space: nowrap; }
+@keyframes badgePulse {
+  0%   { box-shadow: 0 0 0 0 rgba(217,70,239,0.6); }
+  70%  { box-shadow: 0 0 0 8px rgba(217,70,239,0); }
+  100% { box-shadow: 0 0 0 0 rgba(217,70,239,0); }
+}
+@media (prefers-reduced-motion: reduce) { .hero-badge-dot { animation: none; } }
+@media (max-width: 860px) {
+  .hero-badge { margin-bottom: 14px; font-size: 0.66rem; gap: 8px; }
+}
+@media (max-width: 380px) {
+  .hero-badge-new { display: none; }
 }
 
 .hero-wordmark {
@@ -591,6 +654,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* Hero load animations */
+.hero-content .hero-badge,
 .hero-content .hero-wordmark,
 .hero-content .hero-tagline,
 .hero-content .hero-sub,
@@ -600,6 +664,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* Triggered by JS */
+.hero-content.revealed .hero-badge    { animation: heroReveal 0.9s 0.05s var(--ease-out) forwards; }
 .hero-content.revealed .hero-wordmark { animation: heroReveal 0.9s 0.2s var(--ease-out) forwards; }
 .hero-content.revealed .hero-tagline  { animation: heroReveal 0.9s 0.45s var(--ease-out) forwards; }
 .hero-content.revealed .hero-sub      { animation: heroReveal 0.9s 0.6s var(--ease-out) forwards; }
