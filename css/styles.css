@@ -744,24 +744,9 @@ section { position: relative; }
 /* ============================================================
    WORK / GALLERY
    ============================================================ */
-#work {
-  padding: 120px 0;
-}
-
-.work-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 56px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--border);
-}
-.work-header .section-heading { margin-bottom: 0; }
-
 /* Even grid. Every piece is shot 4:5, so each tile holds that ratio and
    nothing is ever cropped. No captions — the work speaks for itself; titles
-   live in the lightbox and the alt text. */
+   live only in the alt text. Used by the gallery page's Index view. */
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -809,113 +794,6 @@ section { position: relative; }
   .gallery-frame img { transition: none; }
   .gallery-frame:hover img { transform: none; }
 }
-
-/* ============================================================
-   LIGHTBOX
-   ============================================================ */
-#lightbox {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(10,10,15,0.96);
-  backdrop-filter: blur(12px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-#lightbox.open {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.lightbox-img-wrap {
-  position: relative;
-  max-width: 90vw;
-  max-height: 88vh;
-}
-
-.lightbox-img-wrap picture { display: block; }
-
-#lightbox-img {
-  max-width: 90vw;
-  max-height: 82vh;
-  /* width/height attributes are set per piece to reserve the box before the
-     bitmap lands; `auto` lets the max-* rules above do the actual sizing. */
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border-radius: 2px;
-  box-shadow: 0 0 80px rgba(107,58,255,0.2);
-}
-
-.lightbox-caption {
-  margin-top: 16px;
-  text-align: center;
-}
-.lightbox-caption strong {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.2rem;
-  color: var(--chrome-hi);
-  letter-spacing: 0.05em;
-}
-.lightbox-caption span {
-  font-size: 0.8rem;
-  color: var(--violet-2);
-  margin-left: 12px;
-}
-
-.lightbox-close {
-  position: fixed;
-  top: 24px;
-  right: 30px;
-  width: 44px;
-  height: 44px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--chrome-hi);
-  font-size: 1.3rem;
-  transition: background 0.2s, border-color 0.2s;
-}
-.lightbox-close:hover {
-  background: rgba(107,58,255,0.2);
-  border-color: var(--violet-1);
-}
-.lightbox-close:focus-visible {
-  outline: 2px solid var(--violet-1);
-  outline-offset: 3px;
-}
-
-.lightbox-nav {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--chrome-hi);
-  transition: background 0.2s, border-color 0.2s;
-}
-.lightbox-nav:hover {
-  background: rgba(107,58,255,0.2);
-  border-color: var(--violet-1);
-}
-.lightbox-nav:focus-visible { outline: 2px solid var(--violet-1); outline-offset: 3px; }
-#lightbox-prev { left: 24px; }
-#lightbox-next { right: 24px; }
 
 /* ============================================================
    SHOP MID BAND
@@ -1435,8 +1313,6 @@ section { position: relative; }
   .shop-band-heading { font-size: 1.9rem; }
   .shop-mid-inner { padding: 0 24px; }
 
-  #work { padding: 80px 0; }
-  .work-header { margin-bottom: 36px; padding-bottom: 20px; }
   #goods { padding: 80px 0; }
   #about { padding: 80px 0; }
 
@@ -1446,8 +1322,6 @@ section { position: relative; }
   .footer-top { flex-direction: column; gap: 32px; }
   .footer-nav { display: none; }
 
-  #lightbox-prev { left: 10px; }
-  #lightbox-next { right: 10px; }
 
   #cookie-banner { padding: 16px 24px; }
   .cookie-inner { flex-direction: column; align-items: flex-start; }
@@ -1496,29 +1370,6 @@ section { position: relative; }
 /* About: contact CTA */
 .about-cta { margin-top: 32px; }
 
-/* Lightbox: link from a piece to its print listing */
-.lightbox-shop-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: 16px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--magenta);
-  transition: color 0.2s;
-}
-.lightbox-shop-link:hover { color: var(--chrome-hi); }
-
-/* Medium / edition / price — the collector-facing line under the title */
-.lightbox-details {
-  display: block;
-  margin: 6px 0 0 !important;
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  color: var(--chrome-lo) !important;
-}
 
 /* Footer: meta row (was inline styles) */
 .footer-meta {
@@ -1822,4 +1673,260 @@ section { position: relative; }
     -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 40%, transparent 80%);
             mask-image: linear-gradient(180deg, #000 0%, #000 40%, transparent 80%);
   }
+}
+
+/* ============================================================
+   GALLERY PAGE — /gallery/
+   Exhibit: one piece at a time on a snapping horizontal strip. Each
+   slide's distance from centre (--d, 0 → 1) is set from gallery.js and
+   eases the neighbours back. Index: the even grid above, full page.
+   ============================================================ */
+.gallery-page {
+  --bar-h: 64px;
+  --controls-h: 112px;
+  --slide-h: calc(100svh - var(--nav-h) - var(--bar-h) - var(--controls-h) - 24px);
+  position: relative;
+  padding-top: var(--nav-h);
+  isolation: isolate;
+}
+
+/* Nav: mark the page you're on */
+.nav-links a[aria-current="page"] { color: var(--chrome-hi); }
+.nav-links a[aria-current="page"]::after { width: 100%; }
+
+/* ── Ambient light ────────────────────────────────────── */
+.exhibit-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.exhibit-ambient-layer {
+  position: absolute;
+  inset: -15%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(80px) saturate(1.5);
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-in-out);
+}
+.exhibit-ambient-layer.is-on { opacity: 0.32; }
+/* Keep the edges and the floor dark so the work stays the brightest thing */
+.exhibit-ambient::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 45%, transparent 0%, rgba(10,10,15,0.75) 100%),
+    linear-gradient(180deg, transparent 60%, var(--bg) 100%);
+}
+.gallery-page[data-view="index"] .exhibit-ambient { opacity: 0.4; }
+
+/* ── Bar: label + view switch ─────────────────────────── */
+.gallery-bar {
+  height: var(--bar-h);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.gallery-bar .section-label { margin: 0; }
+
+.gallery-views {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: rgba(255,255,255,0.03);
+}
+.gallery-view-btn {
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 100px;
+  background: transparent;
+  color: var(--chrome-lo);
+  font: 600 0.68rem/1 'Space Grotesk', sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s, background 0.3s;
+}
+.gallery-view-btn:hover { color: var(--chrome-hi); }
+.gallery-view-btn[aria-pressed="true"] {
+  color: #fff;
+  background: linear-gradient(135deg, var(--blue-1), var(--violet-1));
+}
+.gallery-view-btn:focus-visible { outline: 2px solid var(--violet-1); outline-offset: 2px; }
+
+/* ── Exhibit strip ────────────────────────────────────── */
+.exhibit-track {
+  --slide-w: calc(var(--slide-h) * 0.8);
+  position: relative;   /* offsetParent for the slides — gallery.js measures from here */
+  list-style: none;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 4vw, 64px);
+  height: calc(var(--slide-h) + 24px);
+  padding-inline: calc(50% - var(--slide-w) / 2);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  outline: none;
+}
+.exhibit-track::-webkit-scrollbar { display: none; }
+
+.exhibit-slide {
+  --d: 1;
+  flex: 0 0 var(--slide-w);
+  height: var(--slide-h);
+  scroll-snap-align: center;
+  transform: scale(calc(1 - var(--d) * 0.16));
+  opacity: calc(1 - var(--d) * 0.6);
+  filter: saturate(calc(1 - var(--d) * 0.5));
+  transition: transform 0.25s var(--ease-out), opacity 0.25s, filter 0.25s;
+  will-change: transform;
+}
+
+.exhibit-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--bg-2);
+  cursor: pointer;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  transition: box-shadow 0.6s var(--ease-out);
+}
+.exhibit-slide.is-current .exhibit-frame {
+  cursor: zoom-in;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 90px rgba(107,58,255,0.22);
+}
+.exhibit-frame picture,
+.exhibit-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.exhibit-frame:focus-visible { outline: 2px solid var(--violet-1); outline-offset: 6px; }
+
+/* ── Controls: arrows + thumbnail rail ────────────────── */
+.exhibit-controls {
+  height: var(--controls-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 24px;
+}
+.exhibit-arrow {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  color: var(--chrome-hi);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+}
+.exhibit-arrow svg { width: 18px; height: 18px; }
+.exhibit-arrow:hover:not(:disabled) { background: rgba(107,58,255,0.2); border-color: var(--violet-1); }
+.exhibit-arrow:disabled { opacity: 0.25; cursor: default; }
+.exhibit-arrow:focus-visible { outline: 2px solid var(--violet-1); outline-offset: 3px; }
+
+.exhibit-rail {
+  position: relative;   /* offsetParent for the thumbs */
+  display: flex;
+  gap: 8px;
+  padding: 8px 4px;
+  max-width: min(560px, 100%);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.exhibit-rail::-webkit-scrollbar { display: none; }
+.exhibit-thumb {
+  flex: 0 0 auto;
+  width: 40px;
+  aspect-ratio: 4 / 5;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--bg-2);
+  opacity: 0.38;
+  cursor: pointer;
+  transition: opacity 0.3s, transform 0.4s var(--ease-out), border-color 0.3s;
+}
+.exhibit-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.exhibit-thumb:hover { opacity: 0.75; }
+.exhibit-thumb[aria-selected="true"] {
+  opacity: 1;
+  transform: translateY(-4px);
+  border-color: var(--violet-2);
+  box-shadow: 0 0 18px rgba(139,92,246,0.45);
+}
+.exhibit-thumb:focus-visible { outline: 2px solid var(--violet-1); outline-offset: 2px; }
+
+.exhibit-hint {
+  text-align: center;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: -18px;
+}
+
+/* ── Index view ───────────────────────────────────────── */
+.gallery-index { display: none; padding-top: 24px; padding-bottom: 40px; }
+.gallery-page[data-view="index"] .exhibit { display: none; }
+.gallery-page[data-view="index"] .gallery-index { display: block; }
+
+.gallery-shop {
+  display: flex;
+  justify-content: center;
+  padding: 48px 24px 72px;
+}
+
+/* ── Focus mode: the piece alone ──────────────────────── */
+.gallery-focus { overflow: hidden; }
+.gallery-focus .gallery-page {
+  --slide-h: calc(100svh - 48px);
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  padding-top: 0;
+  background: rgba(10,10,15,0.94);
+}
+.gallery-focus #nav,
+.gallery-focus .gallery-bar,
+.gallery-focus .exhibit-controls,
+.gallery-focus .exhibit-hint,
+.gallery-focus .gallery-shop { display: none; }
+.gallery-focus .exhibit-track { height: 100svh; }
+.gallery-focus .exhibit-slide.is-current .exhibit-frame { cursor: zoom-out; }
+.gallery-focus .exhibit-ambient-layer.is-on { opacity: 0.45; }
+
+/* ── Small screens ────────────────────────────────────── */
+@media (max-width: 768px) {
+  .gallery-page { --bar-h: 56px; --controls-h: 96px; }
+  .gallery-bar { padding: 0 24px; }
+  /* On a phone the height is never the limit — size slides off the width */
+  .exhibit-track { --slide-w: min(74vw, calc(var(--slide-h) * 0.8)); gap: 16px; }
+  .exhibit-slide { height: auto; aspect-ratio: 4 / 5; }
+  .exhibit-controls { gap: 12px; padding: 0 16px; }
+  .exhibit-arrow { display: none; }
+  .exhibit-thumb { width: 32px; }
+  .exhibit-hint { display: none; }
+  .gallery-focus .exhibit-track { --slide-w: 100vw; gap: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .exhibit-slide, .exhibit-ambient-layer, .exhibit-thumb { transition: none; }
 }

@@ -15,8 +15,10 @@ Open `index.html` in a browser — no build step, no server required.
 ```
 /
 ├── index.html
+├── gallery/index.html ← the gallery page (schuy.xyz/gallery/)
 ├── css/styles.css
-├── js/main.js
+├── js/main.js         ← shared: nav, forms, analytics, home effects
+├── js/gallery.js      ← gallery page + the GALLERY_ITEMS list
 ├── images/
 │   ├── work/          ← your artwork goes here
 │   ├── hero.mp4       ← hero video loop (add this file)
@@ -31,18 +33,20 @@ Open `index.html` in a browser — no build step, no server required.
 
 ## How to add your artwork
 
-1. Put your image files in `/images/work/` (JPG, PNG, WebP, or SVG).
-2. Open `js/main.js` and find the `GALLERY_ITEMS` array near line 80.
-3. Replace or extend the placeholder entries:
+1. Put the full-size JPEG in `/images/work/`.
+2. Run `tools/make-avif.sh` to generate the 480 / 800 / native AVIFs in `/images/work/avif/`.
+3. Open `js/gallery.js` and add an entry to the `GALLERY_ITEMS` array:
 
 ```js
 const GALLERY_ITEMS = [
-  { src: 'images/work/your-file.jpg', title: 'Piece Title', year: '2024' },
+  { name: 'your-file', title: 'Piece Title', year: '2026', w: 1080, h: 1350 },
   // ...
 ];
 ```
 
-The gallery renders automatically — no other changes needed.
+`name` is the file stem and also the piece's share link (`/gallery/#your-file`).
+Titles and years are never shown — they're used for alt text only. Add the piece
+to the structured data in `index.html` too. The gallery page renders it automatically.
 
 ---
 

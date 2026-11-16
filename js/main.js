@@ -17,8 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroCanvas();
   initHeroParallax();
   initHeroReveal();
-  initGallery();
-  initLightbox();
   initScrollReveal();
   initCursorGlow();
   initForms();
@@ -253,84 +251,6 @@ function initHeroReveal() {
 }
 
 /* ============================================================
-   GALLERY — driven by data array
-   ============================================================ */
-
-// ── Add or remove entries to update the gallery ───────────
-// Put the full-size JPEG in /images/work/, then run tools/make-avif.sh to
-// generate the responsive AVIF derivatives in /images/work/avif/, then add
-// an entry here.
-//
-//   name    file stem, shared by the JPEG and every AVIF derivative
-//   w, h    native pixel dimensions of the JPEG (sets the aspect ratio box)
-//   medium  what it is, in the artist's words — shown in the lightbox
-//   edition e.g. 'Edition of 25' or 'Open edition'
-//   price   display string, e.g. 'From $65'
-//   shop    DEEP link to this piece's own listing, not the shop root.
-//           Without it the lightbox shows no purchase link at all.
-const GALLERY_ITEMS = [
-  // TODO(schuy): replace each `shop` with that piece's own Etsy listing URL,
-  // and fill in medium / edition / price. The shop-root URLs below are the
-  // old placeholders — they still work, they just land people on the
-  // storefront instead of the piece they clicked.
-  { name: 'saturn',     title: 'Saturn',     year: '2025', w: 1080, h: 1350, shop: 'https://schuyxyz.etsy.com' },
-  { name: 'shattered',  title: 'Shattered',  year: '2025', w: 1080, h: 1350, shop: 'https://schuyxyz.etsy.com' },
-  { name: 'boogie',     title: 'Boogie',     year: '2025', w: 1080, h: 1350 },
-  { name: 'partner',    title: 'Partner',    year: '2025', w: 1080, h: 1350 },
-  { name: 'viber',      title: 'Viber',      year: '2024', w: 1120, h: 1400 },
-  { name: 'skullmance', title: 'Skullmance', year: '2024', w: 1120, h: 1400, shop: 'https://schuyxyz.etsy.com' },
-  { name: 'return',     title: 'Return',     year: '2025', w: 1120, h: 1400 },
-  { name: 'focus',      title: 'Focus',      year: '2023', w: 1120, h: 1400 },
-  { name: 'fixed',      title: 'Fixed',      year: '2024', w: 1120, h: 1400 },
-];
-
-/* ── Responsive image helpers ─────────────────────────────
-   Each piece ships as three AVIFs (480 / 800 / native width) plus the
-   original JPEG as the <picture> fallback. AVIF has been baseline across
-   Safari, Chrome and Firefox since 2022, so the JPEG is a true last resort
-   rather than a tier anyone routinely downloads. */
-const jpegSrc  = item => `images/work/${item.name}.jpg`;
-const avifSrc  = (item, w) => `images/work/avif/${item.name}-${w}.avif`;
-const avifSet  = item => [480, 800, item.w]
-  .map(w => `${avifSrc(item, w)} ${w}w`)
-  .join(', ');
-
-// Even grid of 4:5 tiles. These track the columns in styles.css
-// (3 cols → 2 cols at 1024; content box tops out at 1200px).
-const SIZES_TILE = '(max-width: 1024px) 46vw, (min-width: 1280px) 384px, 31vw';
-
-const altText = item =>
-  `${item.title} (${item.year}) — digital artwork by Schuyler Hample (Schuy)`;
-
-function initGallery() {
-  const grid = document.querySelector('.gallery-grid');
-  if (!grid) return;
-
-  GALLERY_ITEMS.forEach((item, i) => {
-    const el = document.createElement('figure');
-    el.className = 'gallery-item reveal reveal-delay-' + ((i % 3) + 1);
-    el.setAttribute('role', 'listitem');
-
-    el.innerHTML = `
-      <button type="button" class="gallery-frame" aria-label="View ${item.title}, ${item.year}">
-        <picture>
-          <source type="image/avif" srcset="${avifSet(item)}" sizes="${SIZES_TILE}">
-          <img src="${jpegSrc(item)}" alt="${altText(item)}" loading="lazy" decoding="async" width="${item.w}" height="${item.h}">
-        </picture>
-      </button>
-    `;
-
-    // The first row is above the fold on most screens — don't lazy-queue it.
-    if (i < 3) el.querySelector('img').loading = 'eager';
-    if (i === 0) el.querySelector('img').setAttribute('fetchpriority', 'high');
-
-    el.querySelector('.gallery-frame').addEventListener('click', () => openLightbox(i));
-
-    grid.appendChild(el);
-  });
-}
-
-/* ============================================================
    FORMS — drops signup + commission inquiry
 
    Both post to Web3forms (https://api.web3forms.com/submit), which needs an
@@ -470,85 +390,6 @@ function initContactForm() {
 }
 
 /* ============================================================
-   LIGHTBOX
-   ============================================================ */
-let currentLightboxIndex = 0;
-
-function openLightbox(index) {
-  currentLightboxIndex = index;
-  const lb   = document.getElementById('lightbox');
-  const img  = document.getElementById('lightbox-img');
-  const avif = document.getElementById('lightbox-avif');
-  const cap  = document.getElementById('lightbox-caption');
-  const item = GALLERY_ITEMS[index];
-
-  // The viewer shows one piece at a time at up to native width, so it gets
-  // the two larger tiers only — no point offering a 480px candidate here.
-  avif.srcset = `${avifSrc(item, 800)} 800w, ${avifSrc(item, item.w)} ${item.w}w`;
-  avif.sizes  = '(max-width: 900px) 92vw, 900px';
-  img.src = jpegSrc(item);
-  img.alt = altText(item);
-  img.width  = item.w;
-  img.height = item.h;
-
-  // Details line: only render the parts this piece actually has, so a piece
-  // with no metadata reads as a clean title/year rather than empty labels.
-  const details = [item.medium, item.edition, item.price].filter(Boolean);
-  const detailLine = details.length
-    ? `<span class="lightbox-details">${details.join(' &middot; ')}</span>`
-    : '';
-  const shopLink = item.shop
-    ? `<a href="${item.shop}" class="lightbox-shop-link" target="_blank" rel="noopener noreferrer" data-track="shop" data-piece="${item.name}">Available as print &rarr;</a>`
-    : '';
-  cap.innerHTML = `<strong>${item.title}</strong><span>${item.year}</span>${detailLine}${shopLink}`;
-
-  lb.classList.add('open');
-  lb.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-
-  // Focus the close button
-  setTimeout(() => document.getElementById('lightbox-close')?.focus(), 50);
-}
-
-function closeLightbox() {
-  const lb = document.getElementById('lightbox');
-  lb.classList.remove('open');
-  lb.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-  // Hand focus back to the piece the viewer ended on, not the page top.
-  document.querySelectorAll('.gallery-frame')[currentLightboxIndex]?.focus({ preventScroll: true });
-}
-
-function lightboxNav(dir) {
-  currentLightboxIndex = (currentLightboxIndex + dir + GALLERY_ITEMS.length) % GALLERY_ITEMS.length;
-  openLightbox(currentLightboxIndex);
-}
-
-function initLightbox() {
-  const lb    = document.getElementById('lightbox');
-  const close = document.getElementById('lightbox-close');
-  const prev  = document.getElementById('lightbox-prev');
-  const next  = document.getElementById('lightbox-next');
-
-  if (!lb) return;
-
-  close?.addEventListener('click', closeLightbox);
-  prev?.addEventListener('click', () => lightboxNav(-1));
-  next?.addEventListener('click', () => lightboxNav(1));
-
-  // Close on backdrop click
-  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
-
-  // Keyboard
-  document.addEventListener('keydown', e => {
-    if (!lb.classList.contains('open')) return;
-    if (e.key === 'Escape')      closeLightbox();
-    if (e.key === 'ArrowLeft')   lightboxNav(-1);
-    if (e.key === 'ArrowRight')  lightboxNav(1);
-  });
-}
-
-/* ============================================================
    SCROLL REVEAL — IntersectionObserver
    ============================================================ */
 function initScrollReveal() {
@@ -601,9 +442,8 @@ function initCursorGlow() {
    ANALYTICS — event wiring
    ============================================================ */
 function initAnalyticsEvents() {
-  // Delegated from the document rather than bound per element: the lightbox's
-  // "Available as print" link is built when a piece is opened, so a bind-at-
-  // startup pass missed the single most purchase-intent click on the site.
+  // Delegated from the document rather than bound per element, so links
+  // built after startup (e.g. on the gallery page) are tracked too.
   const EVENTS = {
     shop:    el => ['shop_click',    { link_url: el.href, piece: el.dataset.piece || null }],
     gumroad: el => ['gumroad_click', { link_url: el.href }],

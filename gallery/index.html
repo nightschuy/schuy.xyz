@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── SEO ─────────────────────────────────────────────── -->
+  <title>Gallery | Schuy — Digital Art</title>
+  <meta name="description" content="The Schuy gallery — digital artworks in deep blue, violet and chrome. Step through the work one piece at a time.">
+  <meta name="author" content="Schuy">
+  <link rel="canonical" href="https://schuy.xyz/gallery/">
+
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://schuy.xyz/gallery/">
+  <meta property="og:site_name"   content="Schuy">
+  <meta property="og:title"       content="Gallery | Schuy">
+  <meta property="og:description" content="Digital artworks by Schuy. CHS • FTL • MIA.">
+  <meta property="og:image"       content="https://schuy.xyz/images/og-image.jpg">
+  <meta name="twitter:card"       content="summary_large_image">
+  <meta name="twitter:image"      content="https://schuy.xyz/images/og-image.jpg">
+
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png?v=2">
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png?v=2">
+  <meta name="theme-color" content="#0a0a0f">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;700;900&display=swap">
+  <link rel="stylesheet" href="/css/styles.css?v=20261115-3">
+</head>
+<body class="page-gallery">
+
+<div id="cursor-glow" aria-hidden="true"></div>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="/" class="nav-wordmark chrome-text" aria-label="schuy.xyz — home">SCHUY.XYZ</a>
+
+  <ul class="nav-links" role="list">
+    <li><a href="/gallery/" aria-current="page">Work</a></li>
+    <li><a href="/#shop">Shop</a></li>
+    <li><a href="/#goods">Goods</a></li>
+    <li><a href="/#about">About</a></li>
+  </ul>
+
+  <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div id="nav-drawer" class="nav-drawer" role="dialog" aria-label="Navigation menu">
+  <ul role="list">
+    <li><a href="/gallery/" aria-current="page">Work</a></li>
+    <li><a href="/#shop">Shop</a></li>
+    <li><a href="/#goods">Goods</a></li>
+    <li><a href="/#about">About</a></li>
+  </ul>
+</div>
+
+<!-- ============================================================
+     GALLERY
+     Two views over the same nine pieces:
+       Exhibit — one piece at a time on a horizontal strip, the room
+                 lit by the colours of whatever is in front of you
+       Index   — every piece at once, as an even grid
+     Pieces are built by js/gallery.js from GALLERY_ITEMS.
+     ============================================================ -->
+<main id="gallery" class="gallery-page" data-view="exhibit">
+  <h1 class="visually-hidden">Gallery — digital art by Schuy</h1>
+
+  <!-- Ambient light: two stacked layers crossfade to the current piece -->
+  <div class="exhibit-ambient" aria-hidden="true">
+    <div class="exhibit-ambient-layer"></div>
+    <div class="exhibit-ambient-layer"></div>
+  </div>
+
+  <header class="gallery-bar">
+    <p class="section-label">Gallery</p>
+    <div class="gallery-views" role="group" aria-label="Gallery view">
+      <button type="button" class="gallery-view-btn" data-view="exhibit" aria-pressed="true">Exhibit</button>
+      <button type="button" class="gallery-view-btn" data-view="index" aria-pressed="false">Index</button>
+    </div>
+  </header>
+
+  <!-- ── Exhibit ─────────────────────────────────────────── -->
+  <section class="exhibit" aria-label="Exhibit — one piece at a time" aria-roledescription="carousel">
+    <ol class="exhibit-track" tabindex="0" aria-label="Artworks. Use the arrow keys to move between pieces."></ol>
+
+    <div class="exhibit-controls">
+      <button type="button" class="exhibit-arrow" data-dir="-1" aria-label="Previous piece">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="exhibit-rail" role="tablist" aria-label="Jump to a piece"></div>
+      <button type="button" class="exhibit-arrow" data-dir="1" aria-label="Next piece">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <p class="exhibit-hint" aria-hidden="true">Click the piece to view it full screen &middot; Esc to exit</p>
+  </section>
+
+  <!-- ── Index ───────────────────────────────────────────── -->
+  <section class="gallery-index section-inner" aria-label="Index — every piece">
+    <div class="gallery-grid" role="list"></div>
+  </section>
+
+  <div class="gallery-shop">
+    <a href="https://schuyxyz.etsy.com" class="btn btn-ghost" target="_blank" rel="noopener noreferrer" data-track="shop" aria-label="Shop prints on Etsy">
+      Shop Prints
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer id="footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; <span id="footer-year"></span> Schuy. All rights reserved.</p>
+      <div class="footer-meta">
+        <p class="footer-copy">CHS &bull; FTL &bull; MIA</p>
+        <a href="/privacy.html" class="footer-copy footer-meta-link">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     COOKIE CONSENT BANNER
+     ============================================================ -->
+<div id="cookie-banner" hidden role="dialog" aria-live="polite" aria-label="Cookie consent">
+  <div class="cookie-inner">
+    <p class="cookie-text">
+      This site uses cookies for analytics. We only enable them with your permission.
+      <a href="/privacy.html" class="cookie-link">Privacy Policy</a>
+    </p>
+    <div class="cookie-actions">
+      <button id="cookie-decline" class="btn btn-ghost cookie-btn">Decline</button>
+      <button id="cookie-accept" class="btn btn-primary cookie-btn">Accept</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/cookie-consent.js"></script>
+<script src="/js/main.js?v=20261115-1"></script>
+<script src="/js/gallery.js?v=20261115-5"></script>
+</body>
+</html>

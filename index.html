@@ -32,7 +32,7 @@
   <!-- ── Structured data ──────────────────────────────────────
        Static rather than generated from GALLERY_ITEMS at runtime: crawlers
        index this reliably without executing the gallery script. Keep the
-       artwork list in sync with GALLERY_ITEMS in js/main.js. -->
+       artwork list in sync with GALLERY_ITEMS in js/gallery.js. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -74,7 +74,7 @@
       {
         "@type": "CollectionPage",
         "@id": "https://schuy.xyz/#catalogue",
-        "url": "https://schuy.xyz/#work",
+        "url": "https://schuy.xyz/gallery/",
         "name": "The Catalogue",
         "isPartOf": { "@id": "https://schuy.xyz/#website" },
         "about": { "@id": "https://schuy.xyz/#person" },
@@ -87,7 +87,11 @@
           { "@type": "VisualArtwork", "name": "Skullmance", "dateCreated": "2024", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/skullmance.jpg" },
           { "@type": "VisualArtwork", "name": "Return",     "dateCreated": "2025", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/return.jpg" },
           { "@type": "VisualArtwork", "name": "Focus",      "dateCreated": "2023", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/focus.jpg" },
-          { "@type": "VisualArtwork", "name": "Fixed",      "dateCreated": "2024", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/fixed.jpg" }
+          { "@type": "VisualArtwork", "name": "Fixed",      "dateCreated": "2024", "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/fixed.jpg" },
+          { "@type": "VisualArtwork", "name": "Bound",      "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/bound.jpg" },
+          { "@type": "VisualArtwork", "name": "Kickflip",   "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/kickflip.jpg" },
+          { "@type": "VisualArtwork", "name": "Levitate",   "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/levitate.jpg" },
+          { "@type": "VisualArtwork", "name": "Ritual",     "artform": "Digital art", "creator": { "@id": "https://schuy.xyz/#person" }, "image": "https://schuy.xyz/images/work/ritual.jpg" }
         ]
       }
     ]
@@ -107,7 +111,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;700;900&display=swap">
 
   <!-- ── Styles ───────────────────────────────────────────── -->
-  <link rel="stylesheet" href="css/styles.css?v=20261014-4">
+  <link rel="stylesheet" href="css/styles.css?v=20261115-3">
 
   <!-- ── Google Analytics 4 ──────────────────────────────── -->
   <!-- GA4 is consent-gated: gtag is not loaded at all until the visitor
@@ -129,7 +133,7 @@
   <a href="#hero" class="nav-wordmark chrome-text" aria-label="schuy.xyz — back to top">SCHUY.XYZ</a>
 
   <ul class="nav-links" role="list">
-    <li><a href="#work">Work</a></li>
+    <li><a href="gallery/">Work</a></li>
     <li><a href="#shop">Shop</a></li>
     <li><a href="#goods">Goods</a></li>
     <li><a href="#about">About</a></li>
@@ -143,7 +147,7 @@
 <!-- Mobile nav drawer -->
 <div id="nav-drawer" class="nav-drawer" role="dialog" aria-label="Navigation menu">
   <ul role="list">
-    <li><a href="#work">Work</a></li>
+    <li><a href="gallery/">Work</a></li>
     <li><a href="#shop">Shop</a></li>
     <li><a href="#goods">Goods</a></li>
     <li><a href="#about">About</a></li>
@@ -176,7 +180,7 @@
       <p class="hero-sub">Immersive art &amp; design for the digital mind.</p>
       <div class="hero-ctas">
         <a
-          href="#work"
+          href="gallery/"
           class="btn btn-primary"
           aria-label="View work"
         >View Work</a>
@@ -213,27 +217,7 @@
 </section>
 
 <!-- ============================================================
-     WORK / GALLERY
-     ============================================================ -->
-<section id="work" aria-labelledby="work-heading">
-  <div class="section-inner">
-    <div class="work-header">
-      <div>
-        <p class="section-label reveal">Selected Work</p>
-        <h2 id="work-heading" class="section-heading reveal reveal-delay-1">The Catalogue</h2>
-      </div>
-    </div>
-
-    <!--
-      Gallery items are injected by JS from the GALLERY_ITEMS array in main.js.
-      To add your artwork: update that array with your image paths, titles, and years.
-    -->
-    <div class="gallery-grid" role="list" aria-label="Art gallery"></div>
-  </div>
-</section>
-
-<!-- ============================================================
-     SHOP CTA BAND — after the work, so the sale follows the art
+     SHOP CTA BAND
      ============================================================ -->
 <section id="shop" aria-label="Shop prints and apparel">
   <div class="shop-glow" aria-hidden="true"></div>
@@ -270,7 +254,7 @@
       <span class="print-fan-card" style="--i:-1">
         <picture>
           <source type="image/avif" srcset="images/work/avif/skullmance-480.avif">
-          <img src="images/work/skullmance.jpg" alt="" loading="lazy" decoding="async" width="1120" height="1400">
+          <img src="images/work/skullmance.jpg" alt="" loading="lazy" decoding="async" width="1080" height="1350">
         </picture>
       </span>
       <span class="print-fan-card" style="--i:1">
@@ -531,7 +515,7 @@
 
       <nav aria-label="Footer navigation">
         <ul class="footer-nav" role="list">
-          <li><a href="#work">Work</a></li>
+          <li><a href="gallery/">Work</a></li>
           <li><a href="#shop">Shop</a></li>
           <li><a href="#goods">Goods</a></li>
           <li><a href="#about">About</a></li>
@@ -597,34 +581,6 @@
 </footer>
 
 <!-- ============================================================
-     LIGHTBOX
-     ============================================================ -->
-<div
-  id="lightbox"
-  role="dialog"
-  aria-modal="true"
-  aria-label="Image viewer"
-  aria-hidden="true"
->
-  <button id="lightbox-close" class="lightbox-close" aria-label="Close image viewer">&times;</button>
-  <button id="lightbox-prev"  class="lightbox-nav"  aria-label="Previous image">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-  </button>
-  <div class="lightbox-img-wrap">
-    <!-- No src/srcset until a piece is opened — an empty src makes the
-         browser re-request the page itself as an image. -->
-    <picture>
-      <source id="lightbox-avif" type="image/avif">
-      <img id="lightbox-img" alt="">
-    </picture>
-    <div class="lightbox-caption" id="lightbox-caption"></div>
-  </div>
-  <button id="lightbox-next"  class="lightbox-nav"  aria-label="Next image">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-  </button>
-</div>
-
-<!-- ============================================================
      COOKIE CONSENT BANNER
      ============================================================ -->
 <div id="cookie-banner" hidden role="dialog" aria-live="polite" aria-label="Cookie consent">
@@ -642,7 +598,7 @@
 
 <!-- ── Scripts ───────────────────────────────────────────── -->
 <script src="js/cookie-consent.js"></script>
-<script src="js/main.js?v=20261014-4"></script>
+<script src="js/main.js?v=20261115-1"></script>
 
 <!-- ── three.js r160 (self-hosted ESM via import-map — no build step) ──
      Vendored under js/vendor/three/ rather than pulled from unpkg: a CDN
