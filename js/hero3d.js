@@ -117,7 +117,9 @@ function initHero3D(mount) {
   const isTouch  = window.matchMedia('(pointer: coarse)').matches;
   const lite = isMobile || isTouch;
 
-  const renderer = new THREE.WebGLRenderer({ antialias: !lite || window.devicePixelRatio < 2, alpha: true, powerPreference: 'high-performance' });
+  // Antialias stays on for phones too: MSAA is cheap on mobile tile GPUs,
+  // and without it the fine eyelid/brow geometry sparkled as dots on iPhone.
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setClearColor(0x000000, 0);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, lite ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -127,7 +129,9 @@ function initHero3D(mount) {
 
   // ── Scene + camera ──
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+  // Near/far kept tight (camera sits ~5 units out): a 0.1 near plane wasted
+  // depth precision, and on phones the thin eye layers z-fought the skin.
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.5, 40);
   camera.position.set(0, 0.4, 5);
 
   // ── Brand lighting (royal blue key, violet fill, magenta rim) ──
@@ -464,7 +468,7 @@ function initHero3D(mount) {
       g.fillStyle = r;
       g.fillRect(0, 0, 64, 64);
       g.fillStyle = 'rgba(255,255,255,0.9)';
-      for (const [w, h] of [[64, 2.2], [2.2, 64]]) {   // the star's spikes
+      for (const [w, h] of [[34, 2.4], [2.4, 34]]) {   // the star's spikes — short, so it reads as a sparkle, not a scratch
         g.beginPath(); g.ellipse(32, 32, w / 2, h / 2, 0, 0, Math.PI * 2); g.fill();
       }
     }
@@ -608,7 +612,7 @@ function initHero3D(mount) {
         }
         const pulse = Math.sin(k * Math.PI);
         g.sp.position.copy(_gp);
-        g.sp.scale.setScalar(hh * 0.32 * pulse);
+        g.sp.scale.setScalar(hh * (lite ? 0.18 : 0.24) * pulse);
         g.sp.material.opacity = pulse;
         g.sp.material.rotation = k * 0.8;
       }
@@ -634,7 +638,10 @@ function initHero3D(mount) {
     model.traverse((o) => {
       if (!o.isMesh) return;
       for (const m of [].concat(o.material)) {
-        if (/^(Sclera|Irises|Pupils|Cornea|EyeMoisture)/.test(m.name)) m.emissiveIntensity = EYE_EMISSIVE;
+        // Solid parts only. Cornea / EyeMoisture are thin shells lying almost
+        // on the skin; boosting them made their z-fighting with the lids and
+        // brow show up as glowing speckles on iPhone.
+        if (/^(Sclera|Irises|Pupils)/.test(m.name)) m.emissiveIntensity = EYE_EMISSIVE;
       }
     });
 
@@ -652,7 +659,8 @@ function initHero3D(mount) {
         sp.scale.setScalar(l.s * hh);
         sp.renderOrder = 20;
         scene.add(sp);
-        return { sp, base: l.o, size: l.s * hh };
+        // Phones: a touch less glow — small screens read it as blown out
+        return { sp, base: l.o * (lite ? 0.7 : 1), size: l.s * hh * (lite ? 0.85 : 1) };
       }),
     }));
     eyeGlow = { eyes, t: 0 };
